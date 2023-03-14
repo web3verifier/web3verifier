@@ -1,0 +1,8 @@
+.Which {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 300px;
+    justify-content: space-around;
+}

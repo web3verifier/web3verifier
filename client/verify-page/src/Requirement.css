@@ -1,0 +1,9 @@
+
+.Requirements {
+    display: flex;
+    flex-flow: column;
+    justify-content:space-between;
+}
+.Requirement {
+    font-size: 10px;
+}
