@@ -57,6 +57,7 @@ module.exports = {
         port: 4333,
     },
     resolve: {
+        symlinks: false,
         extensions: ['.ts', '.tsx', '.js', '.json' ],
         fallback: {
             buffer: require.resolve('buffer/'),

@@ -7,8 +7,8 @@
     "jsx": "react",
     "moduleResolution": "Node",
     "lib": ["ES2020", "DOM"],
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "preserveSymlinks": true
   },
   "exclude": ["./node_modules"]
 }
