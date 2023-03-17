@@ -1,7 +1,7 @@
 import { Keypair } from "@solana/web3.js"
 
 import { sha512 } from '@noble/hashes/sha512'
-import base58 from 'bs58';
+import * as base58 from 'bs58';
 import { CryptoLib } from "./cryptolib"
 import * as ed from '@solana/web3.js/src/utils/ed25519'
 
