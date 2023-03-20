@@ -137,6 +137,12 @@ export const Verify = () => {
 
     useEffect( () => {
         window.addEventListener( "message", receiveMessage, false );
+
+        // this is for safari history-back to enable button after web3verify button click
+        history.replaceState(null, document.getElementsByTagName('title')[0].innerHTML, null);
+        window.addEventListener('popstate', function(e) {
+            window.location.reload();
+        });
         getRequirement()
     }, [])
 
