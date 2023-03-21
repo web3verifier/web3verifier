@@ -59,7 +59,7 @@ export const Verify = () => {
         account.generateSecretkey(setPublickey, showMsg2,readyForWeb3Verify)
     }
     const haveAccount = () => {
-        window.top!.location.href = SECURITY_SERVER + "/entersecret.html"
+        window.top!.postMessage("request topurl", "*");
     }
 
     const receiveMessage = async (event) => {
@@ -130,6 +130,9 @@ export const Verify = () => {
             console.log("enough")
             window.top!.location.href = topurl + plain + "?signature=" + signature
             return
+        } else if ( event.data.indexOf("encoded_top_url=") !== -1 ){
+            let encoded_top_url:string = event.data.substring("encoded_top_url=".length, event.data.length)
+            window.top!.location.href = SECURITY_SERVER + "/entersecret.html?" + "nextencodedurl=" + encoded_top_url
         } else {
             return
         }

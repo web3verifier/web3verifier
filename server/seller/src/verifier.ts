@@ -82,6 +82,10 @@ window.addEventListener('message', (event) => {\n\
             let win = window.top.frames.web3verify;\n\
             win.postMessage('requirement=' + requirement, SECURITY_SERVER);\n\
         } )\n\
+    } else if ( event.data === 'request topurl' ){\n\
+        const topurl = window.top.location.href;\n\
+        let win = window.top.frames.web3verify;\n\
+        win.postMessage('encoded_top_url=' + encodeURIComponent(topurl), SECURITY_SERVER);\n\
     } else {\n\
         return;\n\
     }\n\

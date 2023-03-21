@@ -20,7 +20,7 @@ export const Router = () => {
             <div className="Router">
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/entersecret.html" element={<EnterSecret />} />
+                        <Route path="/entersecret.html?" element={<EnterSecret />} />
                     </Routes>
                 </BrowserRouter>
             </div>
