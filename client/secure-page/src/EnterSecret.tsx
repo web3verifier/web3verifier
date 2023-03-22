@@ -5,7 +5,6 @@ import { SolanaLib } from './solanalib';
 import { useState, useReducer } from 'react'
 import { CallbackButton } from './CallbackButton';
 import { TextBox } from './TextBox';
-import { useLocation } from "react-router-dom";
 import { split } from "./util"
 
 export const EnterSecret = () =>{
@@ -34,9 +33,8 @@ export const EnterSecret = () =>{
             showOKButton()
         }
     }
-    const location = useLocation();
 
-    let args_all:string = location.search
+    let args_all:string = window.location.search
     if ( args_all[0] !== "?"){
         throw Error( "error" )
     }

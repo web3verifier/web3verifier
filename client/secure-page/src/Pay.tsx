@@ -1,7 +1,6 @@
 import React from "react";
 import { useReducer, useState } from "react";
 import { CallbackButton } from './CallbackButton';
-import { useLocation } from "react-router-dom";
 import { split } from "./util"
 import { payUSDC } from "./payUSDC";
 import { Account } from "./account";
@@ -18,9 +17,7 @@ export const Pay = () => {
     const [ErrMsg, setErrMsg]           = useState("")
     const [isDisableButton, setisDisableButton] = useState(false)
 
-    const location = useLocation();
-
-    let args_all:string = location.search
+    let args_all:string = window.location.search
     if ( args_all[0] !== "?"){
         throw Error( "error" )
     }

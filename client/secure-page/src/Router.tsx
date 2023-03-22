@@ -1,6 +1,5 @@
 import React from 'react';
 import './Router.css';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { Which } from './Which';
 import { EnterSecret } from './EnterSecret';
 import { DownloadSecret } from './DownloadSecret';
@@ -12,33 +11,43 @@ import { SolanaLib } from './solanalib';
 
 
 export const Router = () => {
+    const param = window.location.search
+    console.log(window.location.search)
+
     let account = new Account( new SolanaLib() )
     let src = account.getSrcPublickey()
 
     if ( src === "GUEST_ACCOUNT" ){
-        return (
-            <div className="Router">
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/entersecret.html?" element={<EnterSecret />} />
-                    </Routes>
-                </BrowserRouter>
-            </div>
-        )
+        if ( param.indexOf("?entersecret") !== -1 ){
+            return (
+                <EnterSecret />
+            )
+        }
     } else {
-        return (
-            <div className="Router">
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/secure.html"         element={<Which />} />
-                        <Route path="/downloadsecret.html" element={<DownloadSecret />} />
-                        <Route path="/changesecret.html"   element={<ChangeSecret />} />
-                        <Route path="/deletesecret.html"   element={<DeleteSecret returnBackURL = "./index.html" />} />
-                        <Route path="/pay.html?"           element={<Pay />} />
-                    </Routes >
-                </BrowserRouter>
-            </div>
-        )
+        if ( param === "" ) {
+            return (
+                <Which />
+            )
+        } else if ( param === "?downloadsecret" ){
+            return (
+                <DownloadSecret />
+            )
+        } else if ( param === "?changesecret" ){
+            return (
+                <ChangeSecret />
+            )
+        } else if ( param === "?deletesecret" ){
+            return (
+                <DeleteSecret returnBackURL = "./secure.html" />
+            )
+        } else if ( param.indexOf("?pay") !== -1 ){
+            return (
+                <Pay />
+            )
+        }
     }
+    return (
+        <Which />
+    )
 }
 

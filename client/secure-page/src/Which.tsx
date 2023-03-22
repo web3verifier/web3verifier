@@ -12,13 +12,13 @@ export const Which = () => {
         const account = new Account(new SolanaLib() )
         const accountSecurity = new AccountSecurity(new SolanaLib() )
         account.download(accountSecurity.getSecret())
-        window.location.href = "./downloadsecret.html"
+        window.location.href = "./secure.html?downloadsecret"
     }
     const b = () => {
-        window.location.href = "./changesecret.html"
+        window.location.href = "./secure.html?changesecret"
     }
     const c = () => {
-        window.location.href = "./deletesecret.html"
+        window.location.href = "./secure.html?deletesecret"
     }
 
     return (

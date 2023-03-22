@@ -122,7 +122,7 @@ export const Verify = () => {
                     let uiAmount = Number(requestKeyValue['uiAmount'])
                     let address  = requestKeyValue['address']
                     let nextencodeurl  = encodeURIComponent(topurl + plain + "?signature=" + signature)
-                    window.top!.location.href = SECURITY_SERVER+ "/pay.html?" + "uiAmount=" + uiAmount.toString() + "&" + "address=" + address + "&" + "nextencodedurl=" + nextencodeurl
+                    window.top!.location.href = SECURITY_SERVER+ "/secure.html?pay" + "uiAmount=" + uiAmount.toString() + "&" + "address=" + address + "&" + "nextencodedurl=" + nextencodeurl
                     console.log("not enough")
                     return
                 }
@@ -132,7 +132,7 @@ export const Verify = () => {
             return
         } else if ( event.data.indexOf("encoded_top_url=") !== -1 ){
             let encoded_top_url:string = event.data.substring("encoded_top_url=".length, event.data.length)
-            window.top!.location.href = SECURITY_SERVER + "/entersecret.html?" + "nextencodedurl=" + encoded_top_url
+            window.top!.location.href = SECURITY_SERVER + "/secure.html?entersecret" + "&" + "nextencodedurl=" + encoded_top_url
         } else {
             return
         }
