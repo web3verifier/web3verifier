@@ -8,7 +8,7 @@ module.exports = {
     entry : './src/Main.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'secure.js',
+        filename: 'secure_v0.6.js',
     },
     module: {
         rules: [

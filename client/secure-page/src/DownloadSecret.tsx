@@ -1,10 +1,11 @@
 import React from "react";
 import { CallbackButton } from './CallbackButton';
+import { WEB3VERIFY_VERSION } from "./version";
 
 export const DownloadSecret = () => {
 
     const returnback = () => {
-        window.location.href = "./secure.html"
+        window.location.href = "./secure_"+WEB3VERIFY_VERSION+".html"
     }
     return (
         <div className="Global_BasicColumnFlex">

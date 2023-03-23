@@ -38,7 +38,7 @@ export const EnterSecret = () =>{
     if ( args_all[0] !== "?"){
         throw Error( "error" )
     }
-    args_all = args_all.substring( "?".length, args_all.length)
+    args_all = args_all.substring( "?entersecret?".length, args_all.length)
     let args = split( args_all, "&", ["nextencodedurl"] )
 
     const nexturl:string  = decodeURIComponent( args["nextencodedurl"] )

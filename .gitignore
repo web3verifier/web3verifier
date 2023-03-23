@@ -1,6 +1,4 @@
-client/secure-page/dist/*.js
 client/secure-page/dist/*.js.LICENSE.txt
-client/verify-page/dist/*.js
 client/verify-page/dist/*.js.LICENSE.txt
 client/verify-page/node_modules
 server/seller/node_modules

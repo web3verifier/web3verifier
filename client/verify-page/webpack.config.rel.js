@@ -6,7 +6,7 @@ module.exports = {
     entry : './src/Verify.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verify.js',
+        filename: 'verify_v0.6.js',
     },
     module: {
         rules: [

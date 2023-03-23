@@ -21,7 +21,7 @@ export const Pay = () => {
     if ( args_all[0] !== "?"){
         throw Error( "error" )
     }
-    args_all = args_all.substring( "?".length, args_all.length)
+    args_all = args_all.substring( "?pay?".length, args_all.length)
     let args = split( args_all, "&", ["uiAmount", "address", "nextencodedurl"] )
 
     const nexturl:string  = decodeURIComponent( args["nextencodedurl"] )
