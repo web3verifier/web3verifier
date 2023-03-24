@@ -30,7 +30,7 @@ export const EnterSecret = () =>{
         let solanalib = new SolanaLib()
         let accountSecurity = new AccountSecurity( solanalib )
         let [result, str]= accountSecurity.setSecret( secretkey )
-            setSecretkey(secretkey)
+        setSecretkey(secretkey)
         if ( result == false ){
             setMessage( str )
         } else {
@@ -58,7 +58,7 @@ export const EnterSecret = () =>{
                     <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                 </div>
                 <div className="Window_Aligner Window_Aligner_EnterSecret">
-                    <Message className="EnterSecret_Message"  text="Enter your solana secretkey starting with VV" visible={true}/>
+                    <Message className="EnterSecret_Message"  text="Enter a secret key whose public key begins with VV." visible={true}/>
                     <div>
                         <TextBox visible={!isOKButtonVisible} value={secretkey} onchange={onchange} className="SecretText" size={88} maxLength={88} />
                         &nbsp;&nbsp;

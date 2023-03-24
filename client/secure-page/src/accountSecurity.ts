@@ -21,7 +21,11 @@ export class AccountSecurity {
         }
         try {
             const publickey = this.cryptolib.getPublickeyFromSecret(secretkey)
-            this.setPublickey(publickey)
+            if ( publickey[0] === "V" && publickey[1] === "V" ) {
+                this.setPublickey(publickey)
+            } else {
+                return [false, "your publickey is " + publickey + ".\n" + "publickey for web3verifier need to start with VV"]
+            }
         } catch(e) {
             return [false, e.message]
         }
