@@ -1,4 +1,5 @@
 import React from 'react';
+import './Global.css'
 import './Verify.css'
 import { createRoot } from 'react-dom/client';
 import { Account } from './account'
@@ -174,14 +175,14 @@ export const Verify = () => {
         readyForWeb3Verify()
     } 
     return(
-        <div className="Verify">
-            <div className="Verify_FirstLine">
-                <LinkOnParent className="Verify_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+        <div className="Window Window_Verify">
+            <div className="Window_FirstLine Window_FirstLine_Verify">
+                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
             </div>
             <Message className="Verify_Message1"  text="Calculating publickeys starting with VV" visible={isMsgPubVisible}/>
             <Message className="Verify_Publickey" text={PrintPublickey}                          visible={isMsgPubVisible}/>
             <Message className="Verify_Message2"  text="  generate OK! downloading secretkey."   visible={isMsg2Visible}/>
-            <div className="Verify_Aligner">
+            <div className="Window_Aligner Window_Aligner_Verify">
                 <CallbackButton caption="Create New Account"     visible={isFirstButtonsVisible}  onclick={createAccount} disabled={false}/>
                 <CallbackButton caption="Already Have a Account" visible={isFirstButtonsVisible}  onclick={haveAccount}   disabled={false}/>
                 <Requirement    requirements={RequestKeyValues}  visible={isRequirementVisible} />

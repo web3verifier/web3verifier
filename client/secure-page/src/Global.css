@@ -1,7 +1,1 @@
-
-.Global_BasicColumnFlex {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
+../../verify-page/src/Global.css

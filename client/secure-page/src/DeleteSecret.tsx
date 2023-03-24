@@ -20,6 +20,7 @@ export const DeleteSecret = ( props: { returnBackURL: string; } ) => {
     const returnback = () => {
         window.location.href = props.returnBackURL
     }
+
     return (
         <div className="Global_BasicColumnFlex">
             <div>{comment}</div>

@@ -1,20 +1,26 @@
-import React from 'react';
 import './EnterSecret.css'
+import './Global.css'
+import './AmountLabel.css'
+import React from 'react';
 import { AccountSecurity } from './accountSecurity'
 import { SolanaLib } from './solanalib';
 import { useState, useReducer } from 'react'
 import { CallbackButton } from './CallbackButton';
 import { TextBox } from './TextBox';
 import { split } from "./util"
+import { LinkOnParent } from './LinkOnParent';
+import { SECURITY_SERVER } from './url';
+import { Message } from './Message'
+
 
 export const EnterSecret = () =>{
 
     const _ShowOKButton = () => {
         return true
     }
+
     const [secretkey, setSecretkey] = useState("")
-    const [message1, setMessage1]     = useState("Enter your solana secretkey")
-    const [message2, setMessage2]     = useState("")
+    const [message, setMessage]     = useState(" ")
     const [isOKButtonVisible, showOKButton] = useReducer( _ShowOKButton, false )
     const onchange = ( {target: { value }}) => {
         setSecretkey(value)
@@ -26,10 +32,9 @@ export const EnterSecret = () =>{
         let [result, str]= accountSecurity.setSecret( secretkey )
             setSecretkey(secretkey)
         if ( result == false ){
-            setMessage2( str )
+            setMessage( str )
         } else {
-            setMessage1( "" )
-            setMessage2( "Secretkey change is OK" )
+            setMessage( "" )
             showOKButton()
         }
     }
@@ -47,14 +52,23 @@ export const EnterSecret = () =>{
         window.location.href = nexturl
     }
     return(
-        <div className="Global_BasicColumnFlex">
-            <div className="EnterSecret">
-                <div>{message1}</div>
-                <TextBox visible={!isOKButtonVisible} value={secretkey} onchange={onchange} className="SecretText" size={88} maxLength={88} />
-                <CallbackButton caption="OK" visible={!isOKButtonVisible}  onclick={onclick}/>
+        <div className="AllCenter">
+            <div className="Window Window_EnterSecret">
+                <div className="Window_FirstLine Window_FirstLine_EnterSecret">
+                    <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                </div>
+                <div className="Window_Aligner Window_Aligner_EnterSecret">
+                    <Message className="EnterSecret_Message"  text="Enter your solana secretkey starting with VV" visible={true}/>
+                    <div>
+                        <TextBox visible={!isOKButtonVisible} value={secretkey} onchange={onchange} className="SecretText" size={88} maxLength={88} />
+                        &nbsp;&nbsp;
+                        <CallbackButton caption="OK" visible={!isOKButtonVisible}  onclick={onclick}/>
+                    </div>
+                    <Message className="EnterSecret_Message"  text={message} visible={true}/>
+                </div>
+                <CallbackButton caption="OK" visible={isOKButtonVisible}  onclick={returnback}/>
             </div>
-            <div>&nbsp;{message2}</div>
-            <CallbackButton caption="OK" visible={isOKButtonVisible}  onclick={returnback}/>
         </div>
     )
+
 }

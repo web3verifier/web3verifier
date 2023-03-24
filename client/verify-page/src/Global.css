@@ -1,0 +1,46 @@
+
+.AllCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95%;
+}
+.Global_BasicColumnFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.Window{
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #add8e6 0%, #add8e6 22px, #D8D8D8 22px, #D8D8D8 100%); 
+    border:0.5px solid #C0C0C0; 
+    border-radius:10px 10px 10px 10px; 
+    background-color: #D8D8D8;
+}
+.Window_FirstLine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2px;
+}
+.Window_Aligner{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+.Window_MainSite{
+    font-size: 14px;
+    padding-left: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+}
+
+
+
+
