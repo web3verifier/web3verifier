@@ -51,24 +51,42 @@ export const EnterSecret = () =>{
     const returnback = () =>{
         window.location.href = nexturl
     }
-    return(
-        <div className="AllCenter">
-            <div className="Window Window_EnterSecret">
-                <div className="Window_FirstLine Window_FirstLine_EnterSecret">
-                    <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
-                </div>
-                <div className="Window_Aligner Window_Aligner_EnterSecret">
-                    <Message className="EnterSecret_Message"  text="Enter a secret key whose public key begins with VV." visible={true}/>
-                    <div>
-                        <TextBox visible={!isOKButtonVisible} value={secretkey} onchange={onchange} className="SecretText" size={88} maxLength={88} />
-                        &nbsp;&nbsp;
-                        <CallbackButton caption="OK" visible={!isOKButtonVisible}  onclick={onclick}/>
+
+    if ( isOKButtonVisible === false ){
+        return(
+            <div className="AllCenter">
+                <div className="Window Window_EnterSecret">
+                    <div className="Window_FirstLine Window_FirstLine_EnterSecret">
+                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="EnterSecret_Message"  text={message} visible={true}/>
+                    <div className="Window_Aligner Window_Aligner_EnterSecret">
+                        <Message className="EnterSecret_Message"  text="Enter a secret key whose public key begins with VV." visible={true}/>
+                        <div>
+                            <TextBox visible={!isOKButtonVisible} value={secretkey} onchange={onchange} className="SecretText" size={88} maxLength={88} />
+                            &nbsp;&nbsp;
+                            <CallbackButton caption="OK" visible={!isOKButtonVisible}  onclick={onclick}/>
+                        </div>
+                        <Message className="EnterSecret_Message"  text={message} visible={true}/>
+                    </div>
                 </div>
-                <CallbackButton caption="OK" visible={isOKButtonVisible}  onclick={returnback}/>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return(
+            <div className="AllCenter">
+                <div className="Window Window_EnterSecret">
+                    <div className="Window_FirstLine Window_FirstLine_EnterSecret">
+                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                    </div>
+                    <div className="Window_Aligner Window_Aligner_EnterSecret">
+                        <div>
+                        <CallbackButton caption="OK" visible={isOKButtonVisible}  onclick={returnback}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+
+    }
 
 }
