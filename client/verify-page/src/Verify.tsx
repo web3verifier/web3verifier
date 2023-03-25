@@ -35,21 +35,12 @@ export const Verify = () => {
     const _hideFirstButtons = () => {
         return false
     }
-    const _showRequirement = () => {
-        return true
-    }
-    const _showVerifyButton = () => {
-        return true
-    }
 
     const [Amount, setAmount                         ] = useState("0")
     const [isAmountLabelVisible,  showAmountLabel    ] = useReducer( _showAmountLabel, false )
     const [isFirstButtonsVisible, hideFirstButtons   ] = useReducer( _hideFirstButtons, true )
-    const [isMsgPubVisible,       setIsMsgPubVisible ] = useState(false)
     const [PrintPublickey,        setPublickey       ] = useState("")
-    const [isMsg2Visible,         setIsMsg2Visible   ] = useState(false)
-    const [isRequirementVisible,  showRequirement    ] = useReducer( _showRequirement, false)
-    const [isVerifyButtonVisible, showVerifyButton   ] = useReducer( _showVerifyButton, false)
+    const [isGenerateOKMsgVisible,setIsGenerateOKMsgVisiable   ] = useState(false)
     const [isDisableVerifyButton, setDisableVerifyButton] = useState(true)
     const requestNonceCount                            = useRef(0)
     const [RequestKeyValues,  setRequestKeyValue]      = useState<KeyValue[]>([])
@@ -57,8 +48,7 @@ export const Verify = () => {
 
     const createAccount = () => {
         hideFirstButtons()
-        setIsMsgPubVisible(true)
-        account.generateSecretkey(setPublickey, showMsg2,readyForWeb3Verify)
+        account.generateSecretkey(setPublickey, showMsg, hideMsg)
     }
     const haveAccount = () => {
         window.top!.postMessage("request topurl", "*");
@@ -148,7 +138,9 @@ export const Verify = () => {
         window.addEventListener('popstate', function(e) {
             window.location.reload();
         });
-        getRequirement()
+        if ( account.getSrcPublickey() !== "GUEST_ACCOUNT" ) {
+            prepare()
+        }
     }, [])
 
     const getRequirement = async () => {
@@ -159,37 +151,69 @@ export const Verify = () => {
         setDisableVerifyButton(true)
         window.top!.postMessage("request getnonce", "*");
     }
-    const readyForWeb3Verify = () => {
-        showAmountLabel()
-        setIsMsgPubVisible(false)
-        setIsMsg2Visible(false)
-        showVerifyButton()
-        showRequirement()
+    const hideMsg = () => {
+        setIsGenerateOKMsgVisiable(false)
+        prepare()
     }
-    const showMsg2 = () => {
-        setIsMsg2Visible(true)
+    const showMsg = () => {
+        setIsGenerateOKMsgVisiable(true)
+    }
+    const prepare = () => {
+        getRequirement()
+        showAmountLabel()
     }
 
-    if ( account.getSrcPublickey() !== "GUEST_ACCOUNT" && isFirstButtonsVisible === true ) {
-        hideFirstButtons()
-        readyForWeb3Verify()
-    } 
-    return(
-        <div className="Window Window_Verify">
-            <div className="Window_FirstLine Window_FirstLine_Verify">
-                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
-            </div>
-            <Message className="Verify_Message1"  text="Calculating publickeys starting with VV" visible={isMsgPubVisible}/>
-            <Message className="Verify_Publickey" text={PrintPublickey}                          visible={isMsgPubVisible}/>
-            <Message className="Verify_Message2"  text="  generate OK! downloading secretkey."   visible={isMsg2Visible}/>
-            <div className="Window_RowDirection Window_RowDirection_Verify">
-                <CallbackButton caption="Create New Account"     visible={isFirstButtonsVisible}  onclick={createAccount} disabled={false}/>
-                <CallbackButton caption="Already Have a Account" visible={isFirstButtonsVisible}  onclick={haveAccount}   disabled={false}/>
-                <Requirement    requirements={RequestKeyValues}  visible={isRequirementVisible} />
-                <CallbackButton caption="Web3Verify"             visible={isVerifyButtonVisible}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
-            </div>
-        </div>
-    );
+
+    if ( account.getSrcPublickey() === "GUEST_ACCOUNT" ) {
+        if ( isFirstButtonsVisible === true ){
+            return(
+                <div className="Window Window_Verify">
+                    <div className="Window_FirstLine Window_FirstLine_Verify">
+                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                    </div>
+                    <div className="Window_RowDirection Window_RowDirection_Verify">
+                        <CallbackButton caption="Create New Account"     visible={true}  onclick={createAccount} disabled={false}/>
+                        <CallbackButton caption="Already Have a Account" visible={true}  onclick={haveAccount}   disabled={false}/>
+                    </div>
+                </div>
+            );
+        } else {
+            return(
+                <div className="Window Window_Verify">
+                    <div className="Window_FirstLine Window_FirstLine_Verify">
+                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                    </div>
+                    <Message className="Verify_Message1"  text="Calculating publickeys starting with VV" visible={true}/>
+                    <Message className="Verify_Publickey" text={PrintPublickey}                          visible={true}/>
+                </div>
+            );
+        }
+    } else {
+        if ( isGenerateOKMsgVisible === true ){
+            return(
+                <div className="Window Window_Verify">
+                    <div className="Window_FirstLine Window_FirstLine_Verify">
+                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                    </div>
+                    <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
+                    <Message className="Verify_Publickey" text={PrintPublickey}                          visible={true}/>
+                    <Message className="Verify_Message2"  text="  generate OK! downloading secretkey."   visible={true}/>
+                </div>
+            );
+        } else {
+            return(
+                <div className="Window Window_Verify">
+                    <div className="Window_FirstLine Window_FirstLine_Verify">
+                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                    </div>
+                    <div className="Window_RowDirection Window_RowDirection_Verify">
+                        <Requirement    requirements={RequestKeyValues}  visible={true} />
+                        <CallbackButton caption="Web3Verify"             visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
+                    </div>
+                </div>
+            );
+        }
+    }
 }
 const container = document.getElementById('root')
 const root = createRoot( container! )
