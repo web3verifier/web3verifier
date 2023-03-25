@@ -14,7 +14,7 @@
 .Window{
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, #add8e6 0%, #add8e6 22px, #D8D8D8 22px, #D8D8D8 100%); 
+    background: linear-gradient(180deg, #add8e6 0%, #add8e6 24px, #D8D8D8 24px, #D8D8D8 100%);
     border:0.5px solid #C0C0C0; 
     border-radius:10px 10px 10px 10px; 
     background-color: #D8D8D8;
@@ -25,11 +25,17 @@
     justify-content: space-between;
     padding-top: 2px;
 }
-.Window_Aligner{
+.Window_RowDirection{
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
+}
+.Window_ColumnDirection{
+    display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
 }
 
 

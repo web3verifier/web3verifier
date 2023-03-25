@@ -182,7 +182,7 @@ export const Verify = () => {
             <Message className="Verify_Message1"  text="Calculating publickeys starting with VV" visible={isMsgPubVisible}/>
             <Message className="Verify_Publickey" text={PrintPublickey}                          visible={isMsgPubVisible}/>
             <Message className="Verify_Message2"  text="  generate OK! downloading secretkey."   visible={isMsg2Visible}/>
-            <div className="Window_Aligner Window_Aligner_Verify">
+            <div className="Window_RowDirection Window_RowDirection_Verify">
                 <CallbackButton caption="Create New Account"     visible={isFirstButtonsVisible}  onclick={createAccount} disabled={false}/>
                 <CallbackButton caption="Already Have a Account" visible={isFirstButtonsVisible}  onclick={haveAccount}   disabled={false}/>
                 <Requirement    requirements={RequestKeyValues}  visible={isRequirementVisible} />
@@ -191,7 +191,6 @@ export const Verify = () => {
         </div>
     );
 }
-
 const container = document.getElementById('root')
 const root = createRoot( container! )
 root.render(
