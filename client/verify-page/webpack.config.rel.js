@@ -8,6 +8,9 @@ module.exports = {
         path: path.join(__dirname,'dist'),
         filename: 'verify_v0.6.js',
     },
+    watchOptions: {
+        followSymlinks: true,
+    },
     module: {
         rules: [
             {
