@@ -49,4 +49,7 @@ let server = https.createServer(options, async function(request, response) {
 
 server.listen(443, () =>{
     console.log("server start")
+    console.log("server start")
+    console.log("please access:")
+    console.log("https://192.168.15.6:443/test.html")
 })

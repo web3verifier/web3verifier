@@ -45,6 +45,8 @@ let server = https.createServer(options, async function(request, response) {
     response.end(rtnHtml)
 })
 
-server.listen(443, () =>{
+server.listen(44300, () =>{
     console.log("server start")
+    console.log("please access:")
+    console.log("https://192.168.15.6:44300/test.html")
 })
