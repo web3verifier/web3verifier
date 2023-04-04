@@ -1,0 +1,23 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "proxy.js",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "axios": "^1.3.4",
+    "fs": "0.0.1-security",
+    "http-proxy": "^1.18.1",
+    "https": "^1.0.0",
+    "typescript": "^5.0.3",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
