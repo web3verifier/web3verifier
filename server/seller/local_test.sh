@@ -29,4 +29,16 @@ cd ../../client/verify-page/
     npm run dev&
 cd ../../server/seller/
 
+ps aux | grep "node proxy.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
+
+cd ../../client/proxy/
+    if [ ! -d "node_modules" ]; then
+        npm ci
+    fi
+    if [ ! -d "src/proxy.js" ]; then
+        ./node_modules/.bin/tsc ./src/proxy.ts
+    fi
+    node ./src/proxy.js &
+cd ../../server/seller/
+
 ./node_modules/.bin/ts-node-dev ./src/server_example1.ts
