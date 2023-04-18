@@ -3,6 +3,8 @@ client/verify-page/dist/*.js.LICENSE.txt
 client/secure-page/dist/secure_v0.6.js
 client/verify-page/dist/verify_v0.6.js
 client/verify-page/node_modules
+client/proxy/src/*.js
+client/proxy/node_modules
 server/seller/node_modules
 server/seller/src/*.js
 

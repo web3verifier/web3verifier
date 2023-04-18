@@ -49,16 +49,12 @@ module.exports = {
     },
     devServer: {
         server: {
-            type: 'https',
-            options: {
-                key: fs.readFileSync( './ssl/key.pem' ),
-                cert: fs.readFileSync( './ssl/cert.pem' ),
-            },
+            type: 'http'
         },
         static: {
             directory: path.join(__dirname, 'dist'),
         },
-        port: 4333,
+        port: 8090,
     },
     resolve: {
         symlinks: false,

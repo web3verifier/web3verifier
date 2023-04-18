@@ -29,6 +29,13 @@ cd ../../client/verify-page/
     npm run dev&
 cd ../../server/seller/
 
+cd ../../client/secure-page/
+    if [ ! -d "node_modules" ]; then
+        npm ci
+    fi
+    npm run dev&
+cd ../../server/seller/
+
 ps aux | grep "node proxy.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
 
 cd ../../client/proxy/

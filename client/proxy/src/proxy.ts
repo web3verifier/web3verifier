@@ -16,17 +16,32 @@ let server = https.createServer(options, async function(request, response) {
     const {pathname} = url.parse(request.url)
     console.log(pathname)
 
-    axios.get('http://localhost:8080' + pathname)
-    .then( (results) => {
-        console.log(results.status)
-        console.log(results.data)
-        response.writeHead(results.status)
-        response.end(results.data)
-    })
-    .catch( (error) => {
-        console.log("communication error")
-        console.log(error)
-    })
+    if ( pathname?.indexOf("secure") != -1 ){
+        axios.get('http://localhost:8090' + pathname)
+        .then( (results) => {
+            console.log(results.status)
+            console.log(results.data)
+            response.writeHead(results.status)
+            response.end(results.data)
+        })
+        .catch( (error) => {
+            console.log("communication error")
+            console.log(error)
+        })
+
+    } else {
+        axios.get('http://localhost:8080' + pathname)
+        .then( (results) => {
+            console.log(results.status)
+            console.log(results.data)
+            response.writeHead(results.status)
+            response.end(results.data)
+        })
+        .catch( (error) => {
+            console.log("communication error")
+            console.log(error)
+        })
+    }
 
 })
 
