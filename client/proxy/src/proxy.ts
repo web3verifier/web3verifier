@@ -19,8 +19,8 @@ let server = https.createServer(options, async function(request, response) {
     if ( pathname?.indexOf("secure") != -1 ){
         axios.get('http://localhost:8090' + pathname)
         .then( (results) => {
-            console.log(results.status)
-            console.log(results.data)
+            //console.log(results.status)
+            //console.log(results.data)
             response.writeHead(results.status)
             response.end(results.data)
         })
@@ -32,8 +32,8 @@ let server = https.createServer(options, async function(request, response) {
     } else {
         axios.get('http://localhost:8080' + pathname)
         .then( (results) => {
-            console.log(results.status)
-            console.log(results.data)
+            //console.log(results.status)
+            //console.log(results.data)
             response.writeHead(results.status)
             response.end(results.data)
         })
