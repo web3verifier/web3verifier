@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "buildrel": "./node_modules/.bin/webpack --config webpack.config.rel.js",
+    "builddev": "./node_modules/.bin/webpack --config webpack.config.dev.js",
     "dev": "webpack-dev-server --config webpack.config.dev.js --open"
   },
   "author": "",

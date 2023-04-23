@@ -3,6 +3,16 @@ import * as fs from 'fs'
 import { Request, Verifier, Verify_Request_Param } from './verifier';
 import assert from 'assert';
 
+let port = 443
+if ( process.argv.length == 3 ) {
+    port = Number(process.argv[2])
+    if ( Number.isNaN( port ) ){
+        console.log( process.argv[2] + "is not number" )
+        process.exit(1)
+    }
+}
+console.log( "port=" + port )
+
 let key  = fs.readFileSync('ssl/key.pem')
 let cert = fs.readFileSync('ssl/cert.pem')
 const options = { key, cert }
@@ -45,8 +55,8 @@ let server = https.createServer(options, async function(request, response) {
     response.end(rtnHtml)
 })
 
-server.listen(44300, () =>{
+server.listen(port, () =>{
     console.log("server start")
     console.log("please access:")
-    console.log("https://192.168.15.6:44300/test.html")
+    console.log("https://Server_IP_Address:" + port + "/test.html")
 })

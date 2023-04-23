@@ -46,7 +46,5 @@ let server = https.createServer(options, async function(request, response) {
 })
 
 server.listen(4433, () =>{
-    console.log("server start")
-    console.log("please access:")
-    console.log("https://192.168.15.6:4433/test.html")
+    console.log("proxy start")
 })

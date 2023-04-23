@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.dev.js",
+    "buildrel": "./node_modules/.bin/webpack --config webpack.config.rel.js",
+    "builddev": "./node_modules/.bin/webpack --config webpack.config.dev.js",
     "dev": "webpack-dev-server --config webpack.config.dev.js --open"
   },
   "author": "",
