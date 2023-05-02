@@ -1,1 +1,1 @@
-export const WEB3VERIFY_VERSION="v0.6"
+export const WEB3VERIFY_VERSION="v0.7"
