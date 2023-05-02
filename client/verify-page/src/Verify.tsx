@@ -144,12 +144,12 @@ export const Verify = () => {
     }, [])
 
     const getRequirement = async () => {
-        window.top!.postMessage("request requirement", "*");
+        window.top!.postMessage("web3verifier_getrequirement", "*");
     }
     const web3Verify = async () => {
         requestNonceCount.current = requestNonceCount.current +1
         setDisableVerifyButton(true)
-        window.top!.postMessage("request getnonce", "*");
+        window.top!.postMessage("web3verifier_getnonce", "*");
     }
     const hideMsg = () => {
         setIsGenerateOKMsgVisiable(false)

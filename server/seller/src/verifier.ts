@@ -63,7 +63,7 @@ window.addEventListener('message', (event) => {\n\
     if (event.origin !== SECURITY_SERVER ){\n\
         return;\n\
     }\n\
-    if ( event.data === 'request getnonce'){\n\
+    if ( event.data === 'web3verifier_getnonce'){\n\
         send( './web3verifier_getnonce', (nonce) => {\n\
             let win = window.top.frames.web3verify;\n\
             let host = window.location.hostname\n\
@@ -76,7 +76,7 @@ window.addEventListener('message', (event) => {\n\
             }\n\
             win.postMessage('nonce_url=' + 'nonce=' + nonce + '&' + 'topurl=' + url, SECURITY_SERVER);\n\
         } )\n\
-    } else if ( event.data === 'request requirement' ){\n\
+    } else if ( event.data === 'web3verifier_getrequirement' ){\n\
         send( './web3verifier_getrequirement', (requirement) => {\n\
             let win = window.top.frames.web3verify;\n\
             win.postMessage('requirement=' + requirement, SECURITY_SERVER);\n\
