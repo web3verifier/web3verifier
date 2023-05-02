@@ -33,7 +33,6 @@ export function getRequirement( requires: Verify_Request_Param[], require: Reque
     }
     return null
 }
-
 export class Verifier {
     private param: Verify_Request_Param[]
     constructor( param: Verify_Request_Param[] ){
@@ -65,7 +64,7 @@ window.addEventListener('message', (event) => {\n\
         return;\n\
     }\n\
     if ( event.data === 'request getnonce'){\n\
-        send( './getnonce', (nonce) => {\n\
+        send( './web3verifier_getnonce', (nonce) => {\n\
             let win = window.top.frames.web3verify;\n\
             let host = window.location.hostname\n\
             let port = window.location.port\n\
@@ -78,7 +77,7 @@ window.addEventListener('message', (event) => {\n\
             win.postMessage('nonce_url=' + 'nonce=' + nonce + '&' + 'topurl=' + url, SECURITY_SERVER);\n\
         } )\n\
     } else if ( event.data === 'request requirement' ){\n\
-        send( './getrequirement', (requirement) => {\n\
+        send( './web3verifier_getrequirement', (requirement) => {\n\
             let win = window.top.frames.web3verify;\n\
             win.postMessage('requirement=' + requirement, SECURITY_SERVER);\n\
         } )\n\
@@ -93,28 +92,28 @@ window.addEventListener('message', (event) => {\n\
         ")
     }
     public isRequestForPrepare( url: string ){
-        if ( url === '/proxy.js' || url === '/getnonce' || url === '/getrequirement' ){
+        if ( url === '/web3verifier_proxy.js' || url === '/web3verifier_getnonce' || url === '/web3verifier_getrequirement' ){
             return true
         } else {
             return false
         }
     }
     public isRequestVerify( url: string ){
-        if ( url?.indexOf('/web3verify?') !== -1  ){
+        if ( url?.indexOf('/web3verifier_verify?') !== -1  ){
             return true
         } else {
             return false
         }
     }
     public response( url: string ): string {
-        if ( url === '/proxy.js' ){
+        if ( url === '/web3verifier_proxy.js' ){
             console.log ( "    return script")
             return this.proxyScript()
-        } else if ( url === '/getnonce' ){
+        } else if ( url === '/web3verifier_getnonce' ){
             let nonce: string = this.generateNonce()
             console.log( "  nonce=" + nonce)
             return nonce
-        } else if ( url === '/getrequirement' ){
+        } else if ( url === '/web3verifier_getrequirement' ){
             let rtn = ""
             let first = true
             for ( const p of this.param ){

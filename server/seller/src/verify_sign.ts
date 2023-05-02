@@ -2,7 +2,7 @@ import { SolanaLib } from "./solanalib"
 import { CryptoLib } from './cryptolib';
 
 
-let path: string          = "/web3verify"
+let path: string          = "/web3verifier_verify"
 let publickey_key: string = "?publickey="
 let nonce_key: string      = "&nonce="
 let sign_key: string      = "?signature="
