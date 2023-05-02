@@ -30,6 +30,5 @@ cd ./client/proxy/
 cd ../../
 
 cd ./server/seller/
-ps aux | grep "node ./node_modules/.bin/ts-node-dev ./src/server_example1.ts" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
 ./run.sh 44300
 

@@ -11,4 +11,13 @@ fi
 if [ ! -d "node_modules" ]; then
     npm ci
 fi
-./node_modules/.bin/ts-node-dev ./src/server_example1.ts $Port
+
+#./node_modules/.bin/ts-node-dev --respawn --poll ./src/server_example1.ts $Port
+
+while true; do
+    ps aux | grep "node ./src/server_example1.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
+    ./node_modules/.bin/tsc
+    node ./src/server_example1.js $Port &
+
+    inotifywait -e modify ./src/*.ts
+done
