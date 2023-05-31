@@ -208,7 +208,7 @@ export const Verify = () => {
                     </div>
                     <div className="Window_RowDirection Window_RowDirection_Verify">
                         <Requirement    requirements={RequestKeyValues}  visible={true} />
-                        <CallbackButton caption="Web3Verify"             visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
+                        <CallbackButton caption="Will be verified"             visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
                     </div>
                 </div>
             );
