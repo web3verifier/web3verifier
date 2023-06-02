@@ -3,10 +3,10 @@ const fs   = require('fs');
 
 module.exports = {
     mode  : 'production',
-    entry : './src/Verify.tsx',
+    entry : './src/VerifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verify_v0.7.js',
+        filename: 'verifycore_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
