@@ -1,1 +1,1 @@
-../../verify-page/src/account.ts
+../../verifycore/src/account.ts

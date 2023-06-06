@@ -4,10 +4,10 @@ const fs   = require('fs');
 module.exports = {
     mode  : 'development',
     devtool: 'inline-source-map',
-    entry : './src/VerifyCore.tsx',
+    entry : './src/verify.ts',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verifycore_v0.7.js',
+        filename: 'verify_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
@@ -19,7 +19,7 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: { presets: ['@babel/preset-env', '@babel/react'] },
+                        options: { presets: ['@babel/preset-env'] },
                     },
                     {
                         loader: 'ts-loader',

@@ -1,1 +1,1 @@
-../../verify-page/src/Message.tsx
+../../verifycore/src/Message.tsx

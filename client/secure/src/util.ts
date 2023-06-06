@@ -1,1 +1,1 @@
-../../verify-page/src/util.ts
+../../verifycore/src/util.ts

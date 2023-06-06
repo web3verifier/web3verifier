@@ -1,1 +1,1 @@
-../../verify-page/src/CallbackButton.tsx
+../../verifycore/src/CallbackButton.tsx

@@ -55,6 +55,7 @@ export const Verify = () => {
     }
 
     const receiveMessage = async (event) => {
+console.log("[VerifyCore]receive")
         event.preventDefault()
         event.stopPropagation()
         if ( typeof event.data !== "string" ){
