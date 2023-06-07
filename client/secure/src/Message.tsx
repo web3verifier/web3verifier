@@ -1,0 +1,1 @@
+../../verifycore/src/Message.tsx

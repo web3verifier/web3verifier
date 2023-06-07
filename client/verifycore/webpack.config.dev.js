@@ -4,10 +4,10 @@ const fs   = require('fs');
 module.exports = {
     mode  : 'development',
     devtool: 'inline-source-map',
-    entry : './src/Verify.tsx',
+    entry : './src/VerifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verify_v0.7.js',
+        filename: 'verifycore_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
@@ -60,7 +60,7 @@ module.exports = {
             //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        port: 8080,
+        port: 8090,
     },
     resolve: {
         symlinks: false,

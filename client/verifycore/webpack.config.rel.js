@@ -1,14 +1,12 @@
-const path    = require('path');
-const fs      = require('fs');
-const webpack = require('webpack');
+const path = require('path');
+const fs   = require('fs');
 
 module.exports = {
-    mode  : 'development',
-    devtool: 'inline-source-map',
-    entry : './src/Main.tsx',
+    mode  : 'production',
+    entry : './src/VerifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'secure_v0.7.js',
+        filename: 'verifycore_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
@@ -49,26 +47,29 @@ module.exports = {
     },
     devServer: {
         server: {
-            type: 'http'
+            type: 'https',
+            options: {
+                key: fs.readFileSync( './ssl/key.pem' ),
+                cert: fs.readFileSync( './ssl/cert.pem' ),
+            },
         },
         static: {
             directory: path.join(__dirname, 'dist'),
         },
-        port: 8090,
+        headers: {
+            //"Access-Control-Allow-Origin": "*",
+            //"Access-Control-Allow-Methods": "*",
+            //"Access-Control-Allow-Headers": "*",
+            //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        },
+        port: 4433,
     },
     resolve: {
         symlinks: false,
         extensions: ['.ts', '.tsx', '.js', '.json' ],
-        fallback: {
-            buffer: require.resolve('buffer/'),
-        },
     },
     target: 'web',
-    plugins: [
-        new webpack.ProvidePlugin({
-              Buffer: ['buffer', 'Buffer']
-        })
-    ],
 };
 
 

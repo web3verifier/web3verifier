@@ -1,5 +1,6 @@
 import axios from 'axios'
-import * as assert from 'assert'
+//import * as assert from 'assert'
+import assert from 'assert'
 import * as https from 'https'
 import * as fs from 'fs'
 import * as url from 'url'
@@ -17,6 +18,18 @@ let server = https.createServer(options, async function(request, response) {
     console.log(pathname)
 
     if ( pathname?.indexOf("secure") != -1 ){
+        axios.get('http://localhost:8100' + pathname)
+        .then( (results) => {
+            //console.log(results.status)
+            //console.log(results.data)
+            response.writeHead(results.status)
+            response.end(results.data)
+        })
+        .catch( (error) => {
+            console.log("secure communication error")
+            //console.log(error)
+        })
+    } else if ( pathname?.indexOf("verifycore") != -1 ){
         axios.get('http://localhost:8090' + pathname)
         .then( (results) => {
             //console.log(results.status)
@@ -25,10 +38,9 @@ let server = https.createServer(options, async function(request, response) {
             response.end(results.data)
         })
         .catch( (error) => {
-            console.log("communication error")
-            console.log(error)
+            console.log("verifycore communication error")
+            //console.log(error)
         })
-
     } else {
         axios.get('http://localhost:8080' + pathname)
         .then( (results) => {
@@ -38,8 +50,8 @@ let server = https.createServer(options, async function(request, response) {
             response.end(results.data)
         })
         .catch( (error) => {
-            console.log("communication error")
-            console.log(error)
+            console.log("else communication error")
+            //console.log(error)
         })
     }
 

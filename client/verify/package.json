@@ -1,0 +1,25 @@
+{
+  "name": "verify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.dev.js",
+  "scripts": {
+    "buildrel": "./node_modules/.bin/webpack --config webpack.config.rel.js",
+    "builddev": "./node_modules/.bin/webpack --config webpack.config.dev.js",
+    "dev": "webpack-dev-server --config webpack.config.dev.js --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "babel-loader": "^9.1.2",
+    "ts-loader": "^9.4.3",
+    "typescript": "^5.1.3",
+    "webpack": "^5.85.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.1"
+  }
+}

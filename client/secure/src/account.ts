@@ -1,0 +1,1 @@
+../../verifycore/src/account.ts

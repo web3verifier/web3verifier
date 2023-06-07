@@ -3,8 +3,12 @@
 <BODY>
     <table border=1>
         <tr><td align="center">
-            <iframe name='web3verify' src='https://192.168.15.6:4433/verify_v0.7.html' width=287px height=87px scrolling='no' marginwidth='0' marginheight='0' frameborder='0'></iframe>
-            <script src='./web3verifier_proxy.js'></script>
+            <div id="web3verifier"
+                 data-client_id="testid"
+                 data-callback="createSession" >
+            </div>
+            <script src='https://192.168.15.6:4433/verify_v0.7.js'></script>
+
         </td></tr>
     </table>
 </BODY>

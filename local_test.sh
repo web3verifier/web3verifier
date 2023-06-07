@@ -15,11 +15,15 @@ sed -i "s/web3verifier.com/$address:4433/g"          ./server/seller/src/url.ts
 
 ps aux | grep webpack| grep -v grep | awk '{ print "kill -9", $2 }' | sh
 
-cd ./client/verify-page/
+cd ./client/verify/
     ./run.sh &
 cd ../../
 
-cd ./client/secure-page/
+cd ./client/verifycore/
+    ./run.sh &
+cd ../../
+
+cd ./client/secure/
     ./run.sh &
 cd ../../
 
