@@ -1,6 +1,6 @@
 import React from 'react';
 import './Global.css'
-import './Verify.css'
+import './VerifyCore.css'
 import { createRoot } from 'react-dom/client';
 import { Account } from './account'
 import { SolanaLib } from './solanalib';
