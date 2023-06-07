@@ -59,7 +59,7 @@ let server = https.createServer(options, function (request, response) {
             })
                 .catch((error) => {
                 console.log("secure communication error");
-                //console.log(error)
+                console.log(error);
             });
         }
         else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("verifycore")) != -1) {
@@ -72,7 +72,7 @@ let server = https.createServer(options, function (request, response) {
             })
                 .catch((error) => {
                 console.log("verifycore communication error");
-                //console.log(error)
+                console.log(error);
             });
         }
         else {
@@ -85,7 +85,7 @@ let server = https.createServer(options, function (request, response) {
             })
                 .catch((error) => {
                 console.log("else communication error");
-                //console.log(error)
+                console.log(error);
             });
         }
     });
