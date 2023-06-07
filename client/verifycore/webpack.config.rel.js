@@ -47,11 +47,7 @@ module.exports = {
     },
     devServer: {
         server: {
-            type: 'https',
-            options: {
-                key: fs.readFileSync( './ssl/key.pem' ),
-                cert: fs.readFileSync( './ssl/cert.pem' ),
-            },
+            type: 'http',
         },
         static: {
             directory: path.join(__dirname, 'dist'),
@@ -63,7 +59,7 @@ module.exports = {
             //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        port: 4433,
+        port: 8090,
     },
     resolve: {
         symlinks: false,

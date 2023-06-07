@@ -53,7 +53,7 @@ module.exports = {
         static: {
             directory: path.join(__dirname, 'dist'),
         },
-        port: 8090,
+        port: 8100,
     },
     resolve: {
         symlinks: false,

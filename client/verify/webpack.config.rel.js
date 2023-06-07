@@ -3,10 +3,10 @@ const fs   = require('fs');
 
 module.exports = {
     mode  : 'production',
-    entry : './src/VerifyCore.tsx',
+    entry : './src/verify.ts',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verifycore_v0.7.js',
+        filename: 'verify_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
@@ -18,7 +18,7 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: { presets: ['@babel/preset-env', '@babel/react'] },
+                        options: { presets: ['@babel/preset-env'] },
                     },
                     {
                         loader: 'ts-loader',
@@ -47,11 +47,7 @@ module.exports = {
     },
     devServer: {
         server: {
-            type: 'https',
-            options: {
-                key: fs.readFileSync( './ssl/key.pem' ),
-                cert: fs.readFileSync( './ssl/cert.pem' ),
-            },
+            type: 'http',
         },
         static: {
             directory: path.join(__dirname, 'dist'),
@@ -63,7 +59,7 @@ module.exports = {
             //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        port: 4433,
+        port: 8080,
     },
     resolve: {
         symlinks: false,
