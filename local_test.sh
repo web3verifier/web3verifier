@@ -16,8 +16,7 @@ sed -i "s/web3verifier.com/$address:4433/g"          ./server/seller/src/url.ts
 ps aux | grep webpack| grep -v grep | awk '{ print "kill -9", $2 }' | sh
 
 cd ./client/verify/
-    ./build.sh dev
-    cp dist/verify* ../../server/seller/
+    ./run.sh &
 cd ../../
 
 cd ./client/verifycore/

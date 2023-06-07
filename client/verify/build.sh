@@ -19,4 +19,3 @@ else
     exit
 fi
 
-cp dist/verify_v0.7.js ../verifycore/dist/

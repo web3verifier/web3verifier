@@ -60,7 +60,7 @@ module.exports = {
             //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        port: 8080,
+        port: 8090,
     },
     resolve: {
         symlinks: false,
