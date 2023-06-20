@@ -42,26 +42,53 @@ export const Verify = () => {
     const [PrintPublickey,        setPublickey       ] = useState("")
     const [isGenerateOKMsgVisible,setIsGenerateOKMsgVisiable   ] = useState(false)
     const [isDisableVerifyButton, setDisableVerifyButton] = useState(true)
-    const requestNonceCount                            = useRef(0)
     const [RequestKeyValues,  setRequestKeyValue]      = useState<KeyValue[]>([])
     const RefRequestKeyValues                          = useRef<KeyValue[]>([])
+    const [ButtonCaption,        setButtonCaption ] = useState("will be verified")
+    const [VerifyType,           setVerifyType    ] = useState("not set verify type")
 
     const createAccount = () => {
         hideFirstButtons()
         account.generateSecretkey(setPublickey, showMsg, hideMsg)
     }
     const haveAccount = () => {
-        window.top!.postMessage("request topurl", "*");
+        window.top!.postMessage("request topurl@", "*");
+    }
+
+    const setType = ( type:string ) => {
+        if ( type === "sign_in" ){
+            setButtonCaption("Sign-In")
+            setVerifyType(type)
+            setDisableVerifyButton(false)
+        }
+    }
+
+    const handle_verifytype = async ( client_rtn: string ) => {
+        let reqs = split( client_rtn, "&", ["verify_type"] )
+        setType(reqs["verify_type"])
+    }
+    const handle_callbackfunc = async ( client_rtn: string ) => {
+        let reqs = split( client_rtn, "&", ["callback_func", "token_signed_by_server"] )
+        let [plain, signature] = await account.sign( reqs["token_signed_by_server"] )
+        let tokensigndbyclient = signature
+        let msg = "web3verifier_callbackfunc@"
+        msg += "client_id=" + account.getSrcPublickey() 
+        msg += "&token_signed_by_client=" + tokensigndbyclient 
+        msg += "&callback_func=" + reqs["callback_func"];
+        window.top!.postMessage(msg, "*");
     }
 
     const receiveMessage = async (event) => {
-console.log("[VerifyCore]receive")
         event.preventDefault()
         event.stopPropagation()
         if ( typeof event.data !== "string" ){
             return
         }
-        if ( event.data.indexOf("requirement=") !== -1 ){
+        if ( event.data.indexOf("verify_type=") !== -1 ){
+            handle_verifytype(event.data)
+        } else if ( event.data.indexOf("callback_func=") !== -1 ){
+            await handle_callbackfunc(event.data)
+/*        } else if ( event.data.indexOf("requirement=") !== -1 ){
             const length = "requirement=".length
             const requirement:string = event.data.substring(length, event.data.length)
             const reqs_string = requirement.split("?")
@@ -97,7 +124,9 @@ console.log("[VerifyCore]receive")
 
             RefRequestKeyValues.current = refreqkeyvalue
             setDisableVerifyButton(false)
-        } else if ( event.data.indexOf("nonce_url=") !== -1 ){
+*/
+
+/*        } else if ( event.data.indexOf("nonce_url=") !== -1 ){
             if ( requestNonceCount.current === 0 ){
                 console.log("this function must be called after click web3verify button. security error.")
                 return
@@ -123,9 +152,11 @@ console.log("[VerifyCore]receive")
             console.log("enough")
             window.top!.location.href = topurl + plain + "?signature=" + signature
             return
-        } else if ( event.data.indexOf("encoded_top_url=") !== -1 ){
+*/
+/*        } else if ( event.data.indexOf("encoded_top_url=") !== -1 ){
             let encoded_top_url:string = event.data.substring("encoded_top_url=".length, event.data.length)
             window.top!.location.href = SECURITY_SERVER + "/secure_" + WEB3VERIFY_VERSION + ".html" + "?entersecret?" + "nextencodedurl=" + encoded_top_url
+*/
         } else {
             return
         }
@@ -133,24 +164,18 @@ console.log("[VerifyCore]receive")
 
     useEffect( () => {
         window.addEventListener( "message", receiveMessage, false );
-
-        // this is for safari history-back to enable button after web3verify button click
-        history.replaceState(null, document.getElementsByTagName('title')[0].innerHTML, null);
-        window.addEventListener('popstate', function(e) {
-            window.location.reload();
-        });
         if ( account.getSrcPublickey() !== "GUEST_ACCOUNT" ) {
             prepare()
         }
     }, [])
 
-    const getRequirement = async () => {
-        window.top!.postMessage("web3verifier_getrequirement", "*");
+    const getVeirfyType = async () => {
+        window.top!.postMessage("web3verifier_getverifytype@", "*");
     }
     const web3Verify = async () => {
-        requestNonceCount.current = requestNonceCount.current +1
-        setDisableVerifyButton(true)
-        window.top!.postMessage("web3verifier_getnonce", "*");
+        if ( VerifyType === "sign_in" ){
+            window.top!.postMessage("web3verifier_getcallbackfunc_tokensignedbyserver@" , "*");
+        }
     }
     const hideMsg = () => {
         setIsGenerateOKMsgVisiable(false)
@@ -160,7 +185,7 @@ console.log("[VerifyCore]receive")
         setIsGenerateOKMsgVisiable(true)
     }
     const prepare = () => {
-        getRequirement()
+        getVeirfyType()
         showAmountLabel()
     }
 
@@ -209,7 +234,7 @@ console.log("[VerifyCore]receive")
                     </div>
                     <div className="Window_RowDirection Window_RowDirection_Verify">
                         <Requirement    requirements={RequestKeyValues}  visible={true} />
-                        <CallbackButton caption="Will be verified"             visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
+                        <CallbackButton caption={ButtonCaption}             visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
                     </div>
                 </div>
             );

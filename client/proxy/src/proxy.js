@@ -75,8 +75,21 @@ let server = https.createServer(options, function (request, response) {
                 console.log(error);
             });
         }
-        else {
+        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("verify")) != -1) {
             axios_1.default.get('http://localhost:8080' + pathname)
+                .then((results) => {
+                //console.log(results.status)
+                //console.log(results.data)
+                response.writeHead(results.status);
+                response.end(results.data);
+            })
+                .catch((error) => {
+                console.log("verify communication error");
+                console.log(error);
+            });
+        }
+        else {
+            axios_1.default.get('http://localhost:8100' + pathname)
                 .then((results) => {
                 //console.log(results.status)
                 //console.log(results.data)

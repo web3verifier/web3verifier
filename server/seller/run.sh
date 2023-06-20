@@ -15,9 +15,9 @@ fi
 #./node_modules/.bin/ts-node-dev --respawn --poll ./src/server_example1.ts $Port
 
 while true; do
-    ps aux | grep "node ./src/server_example1.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
+    ps aux | grep "node ./src/create_session_example.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
     ./node_modules/.bin/tsc
-    node ./src/server_example1.js $Port &
+    node ./src/create_session_example.js $Port &
 
     inotifywait -e modify ./src/*.ts
 done
