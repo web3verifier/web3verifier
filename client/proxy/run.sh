@@ -9,4 +9,4 @@ if [ ! -d "src/proxy.js" ]; then
 fi
 
 
-node ./src/proxy.js 
+./node_modules/.bin/node ./src/proxy.js 

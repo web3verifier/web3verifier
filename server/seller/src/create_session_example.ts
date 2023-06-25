@@ -32,6 +32,7 @@ app.use(session({
 
 app.post('/create_session', async (req: any, res: Response) => {
     console.log( "in /create_session" )
+    console.log( "req.body=" )
     console.log( req.body )
     try {
         //if ( await verifier.verify( req.body ) === false ){

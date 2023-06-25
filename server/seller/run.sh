@@ -17,7 +17,7 @@ fi
 while true; do
     ps aux | grep "node ./src/create_session_example.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
     ./node_modules/.bin/tsc
-    node ./src/create_session_example.js $Port &
+    ./node_modules/.bin/node ./src/create_session_example.js $Port &
 
     inotifywait -e modify ./src/*.ts
 done
