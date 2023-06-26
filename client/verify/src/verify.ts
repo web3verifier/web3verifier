@@ -1,6 +1,5 @@
-import {split} from "./util"
-
-const SECURITY_SERVER = 'https://192.168.15.6:4433'
+import { split } from "./util"
+import { SECURITY_SERVER } from "./url"
 
 function send( url: string | URL, callback: { (nonce: any): void; (requirement: any): void; (arg0: string): void; } ) {
     let connect = new XMLHttpRequest();
@@ -24,7 +23,7 @@ function postMessage(iframe:HTMLIFrameElement, msg: string){
 }
 
 let iframe = document.createElement('iframe')
-iframe.src = 'https://192.168.15.6:4433/verifycore_v0.7.html'
+iframe.src = SECURITY_SERVER + '/verifycore_v0.7.html'
 let web3verifier:HTMLElement | null = document.getElementById('web3verifier')
 web3verifier!.appendChild(iframe)
 
