@@ -96,8 +96,34 @@
                       
         <div class="space"></div>
                       
-            <iframe name='web3verify' src='https://web3verifier.com/verifycore_v0.7.html' width=287px height=87px scrolling='no' marginwidth='0' marginheight='0' frameborder='0'></iframe>
-            <script src='./web3verifier_proxy.js'></script>
+            <div id="web3verifier"
+                 verify_type            ="sign_in"
+                 token_signed_by_server ="token"
+                 callback_func          ="createSession" >
+            </div>
+            <script src='https://web3verifier.com/verify_v0.7.js'></script>
+            <script>
+                function createSession( client_id, token_signed_by_client ){
+                    console.log("createSession")
+
+                    // Send the idToken to the server for verification
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', './create_session');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                console.log( "Verification successful" )
+                                window.location.href = './ok.html';
+                            } else {
+                                console.log('Token verification failed');
+                            }
+                        }
+                    };
+                    console.log( token_signed_by_client );
+                    xhr.send(JSON.stringify({ client_id, token_signed_by_client }));
+                }
+            </script>
         <BR>
 
     </div>
