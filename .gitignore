@@ -1,12 +1,9 @@
 client/secure/dist/*.js.LICENSE.txt
 client/verify/dist/*.js.LICENSE.txt
 client/verifycore/dist/*.js.LICENSE.txt
-client/secure/dist/secure_v0.6.js
 client/secure/dist/secure_v0.7.js
-client/verify/dist/verify_v0.6.js
 client/verify/dist/verify_v0.7.js
-client/verifycore/dist/verifycore_v0.6.js
-client/verifycore/dist/verifycore_v0.7.js
+client/verifycore/dist/verify_core_v0.7.js
 client/verify/node_modules
 client/verifycore/node_modules
 client/proxy/src/*.js
