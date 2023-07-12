@@ -1,6 +1,7 @@
 import express, { Response } from 'express';
 import session from 'express-session';
 import { Request, Verifier, Verify_Request_Param } from './verifier';
+import http  from 'http';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
@@ -90,6 +91,12 @@ const sslOptions = {
 
 
 
-https.createServer(sslOptions, app).listen(port, () => {
-    console.log('Server is running on port ' + port);
-});
+if ( port == 80 ){
+    http.createServer(app).listen(port, () => {
+        console.log('http server is running on port ' + port);
+    });
+} else {
+    https.createServer(sslOptions, app).listen(port, () => {
+        console.log('https server is running on port ' + port);
+    });
+}

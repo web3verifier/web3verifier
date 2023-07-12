@@ -6,7 +6,7 @@ module.exports = {
     entry : './src/VerifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verifycore_v0.7.js',
+        filename: 'verify_core_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,

@@ -62,7 +62,7 @@ let server = https.createServer(options, function (request, response) {
                 console.log(error);
             });
         }
-        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("verifycore")) != -1) {
+        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("verify_core")) != -1) {
             axios_1.default.get('http://localhost:8090' + pathname)
                 .then((results) => {
                 //console.log(results.status)
@@ -71,7 +71,7 @@ let server = https.createServer(options, function (request, response) {
                 response.end(results.data);
             })
                 .catch((error) => {
-                console.log("verifycore communication error");
+                console.log("verify_core communication error");
                 console.log(error);
             });
         }
