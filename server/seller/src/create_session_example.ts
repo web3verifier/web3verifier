@@ -52,26 +52,6 @@ app.post('/create_session', async (req: any, res: Response) => {
     }
 });
 
-// Example route to check if the user is logged in
-app.get('/profile', (req: any, res: Response) => {
-    if (req.session.user) {
-        // User is logged in, you can access their information from req.session.user
-        res.json(req.session.user);
-    } else {
-        res.sendStatus(401); // Unauthorized
-    }
-});
-
-app.get('/favicon.ico', (req, res) => {
-    console.log( "get /favicon.ico" )
-
-});
-
-app.get('/', (req, res) => {
-    console.log("/")
-    res.send('GET request to the homepage')
-})
-
 app.get('/:filename', (req, res) => {
     const fileName = req.params.filename;
     console.log( fileName )
