@@ -169,7 +169,7 @@ export const Verify = () => {
         }
     }, [])
 
-    const getVeirfyType = async () => {
+    const getVerifyType = async () => {
         window.top!.postMessage("web3verifier_getverifytype@", "*");
     }
     const web3Verify = async () => {
@@ -185,7 +185,7 @@ export const Verify = () => {
         setIsGenerateOKMsgVisiable(true)
     }
     const prepare = () => {
-        getVeirfyType()
+        getVerifyType()
         showAmountLabel()
     }
 
