@@ -4,13 +4,26 @@
     <table border=1>
         <tr><td align="center">
             <div id="web3verifier"
-                 verify_type            ="sign_in"
-                 token_signed_by_server ="token"
-                 callback_func          ="createSession" >
+                 verify_type       = "sign_in"
+                 get_nonce_func    = "getnonce"
+                 button_click_func = "createSession" >
             </div>
             <script src='https://192.168.15.6:4433/verify_v0.7.js'></script>
             <script>
-                function createSession( client_id, token_signed_by_client ){
+                var nonce = "Not_Initialized"
+                function getnonce( callback ){
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('GET', './get_nonce');
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            callback(xhr.responseText)
+                        } else if (xhr.status >= 307 && xhr.readyState === 4) {
+                            alert('error');
+                        }
+                    }
+                    xhr.send(null);
+                }
+                function createSession( client_id, plain, signature_by_client ){
                     console.log("createSession")
 
                     // Send the idToken to the server for verification
@@ -23,12 +36,12 @@
                                 console.log( "Verification successful" )
                                 window.location.href = './ok.html';
                             } else {
-                                console.log('Token verification failed');
+                                console.log('Create Session failed');
                             }
                         }
                     };
-                    console.log( token_signed_by_client );
-                    xhr.send(JSON.stringify({ client_id, token_signed_by_client }));
+                    console.log( signature_by_client );
+                    xhr.send(JSON.stringify({ client_id, signature_by_client }));
                 }
             </script>
         </td></tr>

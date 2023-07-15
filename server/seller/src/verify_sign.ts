@@ -2,18 +2,20 @@ import { SolanaLib } from "./solanalib"
 import { CryptoLib } from './cryptolib';
 
 
-let path: string          = "/web3verifier_verify"
-let publickey_key: string = "?publickey="
+let path: string           = "/web3verifier_verify"
+let publickey_key: string  = "?publickey="
+let domain_key: string     = "&domain="
 let nonce_key: string      = "&nonce="
-let sign_key: string      = "?signature="
+let sign_key: string       = "?signature="
 
-export async function sign( publickey:string, secretkey:string, nonce:string ): Promise<[string, string]> {
+export async function sign( serverpublickey:string, domain:string, nonce:string, secretkey:string, ): Promise<[string, string]> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    let plain = path + publickey_key + publickey + nonce_key + nonce 
-    console.log( "sign(plain,secretkey)")
-    console.log( "plain=" + plain)
-    console.log( "secretkey=" + secretkey)
+    let plain = path + publickey_key + serverpublickey + domain_key + domain + nonce_key + nonce
+
+    console.log( "sign(plain,secretkey)"  )
+    console.log( "plain=" + plain )
+    console.log( "secretkey=" + secretkey )
     return [plain, await cryptolib.sign(plain, secretkey)]
 }
 

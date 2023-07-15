@@ -52,6 +52,13 @@ app.post('/create_session', async (req: any, res: Response) => {
     }
 });
 
+app.get('/get_nonce', (req, res) => {
+    console.log( "in /getnonce" )
+    let randomkey = "fjsdklfjljl"
+    console.log(randomkey)
+    res.send(randomkey)
+});
+
 app.get('/:filename', (req, res) => {
     const fileName = req.params.filename;
     console.log( fileName )

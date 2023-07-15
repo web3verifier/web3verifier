@@ -35,38 +35,21 @@ window.addEventListener('message', (event) => {
         let el = document.getElementById("web3verifier")
         let type     = el!.getAttribute("verify_type")
         postMessage(iframe, 'verify_type=' + type );
-    } else if ( event.data === 'web3verifier_getcallbackfunc_tokensignedbyserver@') {
+    } else if ( event.data === 'web3verifier_getparam@') {
         let el = document.getElementById("web3verifier")
-        let token    = el!.getAttribute("token_signed_by_server")
-        let callback = el!.getAttribute("callback_func")
-        postMessage(iframe, "callback_func=" + callback + "&token_signed_by_server=" + token)
+        let buttonclickfunc = el!.getAttribute("button_click_func")
+        let getnoncefunc    = el!.getAttribute("get_nonce_func")
+        let serverpublickey = el!.getAttribute("server_publickey")
+        let domain          = document.domain
+        eval(getnoncefunc)( (nonce) => {
+            postMessage(iframe, "callback_func=" + buttonclickfunc + "&server_publickey=" + serverpublickey + "&domain=" + domain + "&nonce=" + nonce )
+        })
     } else if ( event.data.indexOf("web3verifier_callbackfunc@") !== -1 ){
         const length = "web3verifier_callbackfunc=".length
         const reqs_string:string = event.data.substring(length, event.data.length)
-        let reqs = split( reqs_string, "&", ["client_id", "token_signed_by_client", "callback_func"] )
+        let reqs = split( reqs_string, "&", ["client_id", "plain", "signature_by_client", "callback_func"] )
         let funcname = reqs["callback_func"]
-        eval(funcname)( reqs["client_id"], reqs["token_signed_by_client"] )
-
-/*    } else if ( event.data === 'web3verifier_getnonce@'){
-        send( './web3verifier_getnonce', (nonce: string) => {
-            let host = window.location.hostname
-            let port = window.location.port
-            let url = ''
-            if ( port === '80' ) {
-                url = 'https://' + host
-            } else {
-                url = 'https://' + host + ':' + port
-            }
-            postMessage(iframe, 'nonce_url=' + 'nonce=' + nonce + '&' + 'topurl=' + url);
-        } )
-    } else if ( event.data === 'web3verifier_getrequirement@' ){
-        send( './web3verifier_getrequirement', (requirement: string) => {
-            postMessage(iframe, 'requirement=' + requirement);
-        } )
-    } else if ( event.data === 'request topurl@' ){
-        const topurl = window.top!.location.href;
-        postMessage(iframe, 'encoded_top_url=' + encodeURIComponent(topurl));
-*/
+        eval(funcname)( reqs["client_id"], reqs["plain"], reqs["signature_by_client"] )
     } else {
         return;
     }

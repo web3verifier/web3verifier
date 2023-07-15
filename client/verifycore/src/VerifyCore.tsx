@@ -67,15 +67,16 @@ export const Verify = () => {
         let reqs = split( client_rtn, "&", ["verify_type"] )
         setType(reqs["verify_type"])
     }
-    const handle_callbackfunc = async ( client_rtn: string ) => {
-        let reqs = split( client_rtn, "&", ["callback_func", "token_signed_by_server"] )
-        let [plain, signature] = await account.sign( reqs["token_signed_by_server"] )
-        let tokensigndbyclient = signature
+
+    const handle_param = async ( client_rtn: string ) => {
+        let reqs = split( client_rtn, "&", ["callback_func", "server_publickey", "domain", "nonce" ] )
+        let [plain, signature] = await account.sign( reqs["serverpublickey"], reqs["domain"], reqs["nonce"] )
         let msg = "web3verifier_callbackfunc@"
         msg += "client_id=" + account.getSrcPublickey() 
-        msg += "&token_signed_by_client=" + tokensigndbyclient 
+        msg += "&plain="    + plain 
+        msg += "&signature_by_client=" + signature
         msg += "&callback_func=" + reqs["callback_func"];
-        window.top!.postMessage(msg, "*");
+        return msg
     }
 
     const receiveMessage = async (event) => {
@@ -87,76 +88,8 @@ export const Verify = () => {
         if ( event.data.indexOf("verify_type=") !== -1 ){
             handle_verifytype(event.data)
         } else if ( event.data.indexOf("callback_func=") !== -1 ){
-            await handle_callbackfunc(event.data)
-/*        } else if ( event.data.indexOf("requirement=") !== -1 ){
-            const length = "requirement=".length
-            const requirement:string = event.data.substring(length, event.data.length)
-            const reqs_string = requirement.split("?")
-
-            let reqkeyvalue: KeyValue[] = []
-            for ( const req_string of reqs_string ){
-                if (req_string === "") continue
-                let req = split( req_string, "&", ["type", "uiAmount", "address"])
-                //console.log(req)
-                reqkeyvalue.push(req)
-            }
-            setRequestKeyValue(reqkeyvalue)
-
-            let refreqkeyvalue: KeyValue[] = []
-            for ( const req_string of reqs_string ){
-                if (req_string === "") continue
-                let req = split( req_string, "&", ["type", "uiAmount", "address"])
-                if ( req['type'] === "1" ){
-                    let uiAmount = Number(req['uiAmount'])
-                    if ( isNaN(uiAmount)){
-                        throw Error("not number")
-                    }
-                    if ( await blockChain.requireUSDCExist( account.getSrcPublickey(), req['address'], uiAmount )  === true ){
-                        req["result"] = "true"
-                        console.log("prepare already paid")
-                    } else {
-                        req["result"] = "false"
-                        console.log("prepare not paid")
-                    }
-                }
-                refreqkeyvalue.push(req) 
-            }
-
-            RefRequestKeyValues.current = refreqkeyvalue
-            setDisableVerifyButton(false)
-*/
-
-/*        } else if ( event.data.indexOf("nonce_url=") !== -1 ){
-            if ( requestNonceCount.current === 0 ){
-                console.log("this function must be called after click web3verify button. security error.")
-                return
-            }
-            requestNonceCount.current = requestNonceCount.current -1
-            let nonce_url:string = event.data.substring("nonce_url=".length, event.data.length)
-            let d = nonce_url.split("&")
-            let nonce:string     = d[0].substring("nonce=".length, d[0].length)
-            let topurl:string    = d[1].substring("topurl=".length, d[1].length)
-            let [plain, signature] = await account.sign( nonce )
-
-            for ( const requestKeyValue of RefRequestKeyValues.current ){
-                if ( requestKeyValue['type'] === "1" && requestKeyValue['result'] === "false" ){
-                    console.log("uiAmount=" + requestKeyValue["uiAMount"])
-                    let uiAmount = Number(requestKeyValue['uiAmount'])
-                    let address  = requestKeyValue['address']
-                    let nextencodeurl  = encodeURIComponent(topurl + plain + "?signature=" + signature)
-                    window.top!.location.href = SECURITY_SERVER+ "/secure_"+ WEB3VERIFY_VERSION + ".html" + "?pay?" + "uiAmount=" + uiAmount.toString() + "&" + "address=" + address + "&" + "nextencodedurl=" + nextencodeurl
-                    console.log("not enough")
-                    return
-                }
-            }
-            console.log("enough")
-            window.top!.location.href = topurl + plain + "?signature=" + signature
-            return
-*/
-/*        } else if ( event.data.indexOf("encoded_top_url=") !== -1 ){
-            let encoded_top_url:string = event.data.substring("encoded_top_url=".length, event.data.length)
-            window.top!.location.href = SECURITY_SERVER + "/secure_" + WEB3VERIFY_VERSION + ".html" + "?entersecret?" + "nextencodedurl=" + encoded_top_url
-*/
+            let msg_call_func = await handle_param(event.data)
+            window.top!.postMessage(msg_call_func, "*");
         } else {
             return
         }
@@ -169,12 +102,9 @@ export const Verify = () => {
         }
     }, [])
 
-    const getVerifyType = async () => {
-        window.top!.postMessage("web3verifier_getverifytype@", "*");
-    }
     const web3Verify = async () => {
         if ( VerifyType === "sign_in" ){
-            window.top!.postMessage("web3verifier_getcallbackfunc_tokensignedbyserver@" , "*");
+            window.top!.postMessage("web3verifier_getparam@" , "*");
         }
     }
     const hideMsg = () => {
@@ -185,7 +115,7 @@ export const Verify = () => {
         setIsGenerateOKMsgVisiable(true)
     }
     const prepare = () => {
-        getVerifyType()
+        window.top!.postMessage("web3verifier_getverifytype@", "*");
         showAmountLabel()
     }
 
