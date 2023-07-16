@@ -47,9 +47,9 @@ window.addEventListener('message', (event) => {
     } else if ( event.data.indexOf("web3verifier_callbackfunc@") !== -1 ){
         const length = "web3verifier_callbackfunc=".length
         const reqs_string:string = event.data.substring(length, event.data.length)
-        let reqs = split( reqs_string, "&", ["client_id", "plain", "signature_by_client", "callback_func"] )
+        let reqs = split( reqs_string, "&", ["client_id", "content", "signature_by_client", "callback_func"] )
         let funcname = reqs["callback_func"]
-        eval(funcname)( reqs["client_id"], reqs["plain"], reqs["signature_by_client"] )
+        eval(funcname)( reqs["client_id"], reqs["content"], reqs["signature_by_client"] )
     } else {
         return;
     }

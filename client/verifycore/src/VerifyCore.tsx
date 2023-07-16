@@ -70,10 +70,10 @@ export const Verify = () => {
 
     const handle_param = async ( client_rtn: string ) => {
         let reqs = split( client_rtn, "&", ["callback_func", "server_publickey", "domain", "nonce" ] )
-        let [plain, signature] = await account.sign( reqs["serverpublickey"], reqs["domain"], reqs["nonce"] )
+        let [content, signature] = await account.sign( reqs["serverpublickey"], reqs["domain"], reqs["nonce"] )
         let msg = "web3verifier_callbackfunc@"
         msg += "client_id=" + account.getSrcPublickey() 
-        msg += "&plain="    + plain 
+        msg += "&content="    + content
         msg += "&signature_by_client=" + signature
         msg += "&callback_func=" + reqs["callback_func"];
         return msg

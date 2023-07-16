@@ -20,13 +20,13 @@ export class SolanaLib extends CryptoLib {
         const keypair = Keypair.fromSecretKey(secret)
         return keypair.publicKey.toBase58()
     }
-    public async sign(plain: string, secretstr: string): Promise<string> {
+    public async sign(content: string, secretstr: string): Promise<string> {
         const secret: Uint8Array = base58.decode(secretstr).slice(0,32)
-        let message: Uint8Array = sha512(plain)
+        let message: Uint8Array = sha512(content)
         return base58.encode(await ed.sign(message, secret))
     }
-    public async verify(plain: string, publickey: string, signature: string): Promise<boolean> {
-        let message: Uint8Array = sha512(plain)
+    public async verify(content: string, publickey: string, signature: string): Promise<boolean> {
+        let message: Uint8Array = sha512(content)
         let sig: Uint8Array = base58.decode(signature)
         return ed.verify(sig, message, base58.decode(publickey))
     }
