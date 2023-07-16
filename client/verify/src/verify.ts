@@ -42,7 +42,8 @@ window.addEventListener('message', (event) => {
         let serverpublickey = el!.getAttribute("server_publickey")
         let domain          = document.domain
         eval(getnoncefunc)( (nonce) => {
-            postMessage(iframe, "callback_func=" + buttonclickfunc + "&server_publickey=" + serverpublickey + "&domain=" + domain + "&nonce=" + nonce )
+            let msg = "callback_func=" + buttonclickfunc + "&server_publickey=" + serverpublickey + "&domain=" + domain + "&nonce=" + nonce 
+            postMessage(iframe, msg) 
         })
     } else if ( event.data.indexOf("web3verifier_callbackfunc@") !== -1 ){
         const length = "web3verifier_callbackfunc=".length

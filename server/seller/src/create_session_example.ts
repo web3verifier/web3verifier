@@ -1,10 +1,12 @@
 import express, { Response } from 'express';
 import session from 'express-session';
-import { Request, Verifier, Verify_Request_Param } from './verifier';
+import { Verifier } from './verifier';
 import http  from 'http';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+
+const this_domain = "192.168.15.6"
 
 let port = 443
 if ( process.argv.length == 3 ) {
@@ -18,7 +20,7 @@ if ( process.argv.length == 3 ) {
 console.log( "port=" + port )
 
 const app = express();
-let verifier = new Verifier( [] )
+let verifier = new Verifier()
 
 app.use(express.json());
 app.use(session({
@@ -36,9 +38,24 @@ app.post('/create_session', async (req: any, res: Response) => {
     console.log( "req.body=" )
     console.log( req.body )
     try {
-        //if ( await verifier.verify( req.body ) === false ){
-            //throw Error("verify error") 
-        //}
+        let client_id                = req.body.client_id
+        let content                  = req.body.content
+        let content_signed_by_client = req.body.content_signed_by_client
+
+        if ( await verifier.verify( client_id, content, content_signed_by_client ) === false ) {
+            throw Error("verify error") 
+        }
+
+/*
+        let serverpublickey          = ""
+        let domain                   = ""
+        let nonce                    = ""
+        if ( this_domain !== domain ){
+            console.log( this_domain + "!==" + domain )
+            throw Error("verify error") 
+        }
+*/
+
         req.session.regenerate( (err: any) =>{
             if ( err ){
                 throw Error("regenerate error")

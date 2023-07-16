@@ -2,59 +2,35 @@ import { SolanaLib } from "./solanalib"
 import { CryptoLib } from './cryptolib';
 
 
-let path: string           = "/web3verifier_verify"
-let publickey_key: string  = "?publickey="
-let domain_key: string     = "&domain="
-let nonce_key: string      = "&nonce="
-let sign_key: string       = "?signature="
+let path: string                  = "/web3verifier_verify"
+let server_publickey_key: string  = ":serverpublickey="
+let domain_key: string            = ":domain="
+let nonce_key: string             = ":nonce="
+let sign_key: string              = ":signature="
+
+function getContent( serverpublickey:string, domain:string, nonce:string ) {
+    let content = path + server_publickey_key + serverpublickey + domain_key + domain + nonce_key + nonce
+    return content
+}
 
 export async function sign( serverpublickey:string, domain:string, nonce:string, secretkey:string, ): Promise<[string, string]> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    let content = path + publickey_key + serverpublickey + domain_key + domain + nonce_key + nonce
+    let content = getContent( serverpublickey, domain, nonce)
 
-    console.log( "sign(content,secretkey)"  )
-    console.log( "content=" + content )
-    console.log( "secretkey=" + secretkey )
+    console.log("    sign( content="+content+", secretkey="+secretkey+" )" )
     return [content, await cryptolib.sign(content, secretkey)]
 }
 
-export async function parse( url: string ): Promise<[string, string, string]>{
-    let str:string = url;
-
-    if ( str.indexOf(path+publickey_key,0) !== -1 ){
-        str = str.substring((path+publickey_key).length)
-    }
-
-    let publickey="nothing"
-    if ( str.indexOf(nonce_key,0) !== -1 ){
-        publickey = str.substring( 0, str.indexOf( nonce_key ) )
-        str = str.substring((publickey+nonce_key).length)
-    }
-
-    let signature = "nothing"
-    let nonce_in_url = "nothing"
-    if ( str.indexOf(sign_key,0) !== -1 ){
-        nonce_in_url = str.substring( 0, str.indexOf(sign_key) )
-        signature = str.substring((nonce_in_url+sign_key).length)
-    }
-    return [publickey, nonce_in_url, signature]
-}
-export async function verify( url: string ): Promise<boolean> {
+export async function verify( clientpublickey:string, content:string, signature:string ): Promise<boolean> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    let signaturePos = url.indexOf(sign_key)
-    let content = url.substring(0, signaturePos)
-    let [publickey, nonce_in_url, signature] = await parse(url)
-
-    if ( publickey === "nothing" || nonce_in_url === "nothing" || signature === "nothing" ){
+    if ( clientpublickey === "nothing" || content === "nothing" || signature === "nothing" ){
         return false
     }
 
-    console.log("  verify(content,publickey,signature)")
-    console.log("    content=" + content)
-    console.log("    publickey=" + publickey)
-    console.log("    signature=" + signature)
+    console.log("    verify( publickey="+clientpublickey+", content="+content+", signature="+ signature )
 
-    return await cryptolib.verify(content,publickey,signature)
+    return await cryptolib.verify(content,clientpublickey,signature)
 }
+
