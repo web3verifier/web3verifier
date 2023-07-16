@@ -54,7 +54,7 @@ app.post('/create_session', async (req: any, res: Response) => {
 
 app.get('/get_nonce', (req, res) => {
     console.log( "in /getnonce" )
-    let randomkey = "fjsdklfjljl"
+    let randomkey = verifier.generateNonce()
     console.log(randomkey)
     res.send(randomkey)
 });

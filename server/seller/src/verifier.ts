@@ -39,97 +39,10 @@ export class Verifier {
         this.param = param
     }
     private map = new Map<string, Date>();
-    private generateNonce(): string{
+    public generateNonce(): string{
         let nonce = uuidv4()
         this.map.set(nonce,new Date())
         return nonce
-    }
-    private proxyScript(): string {
-        return ( "\n\
-send = ( url, callback ) => {\n\
-    connect = new XMLHttpRequest();\n\
-    connect.open('GET', url, true);\n\
-    connect.onreadystatechange = () => {\n\
-        if (connect.readyState === 4 && connect.status === 200) {\n\
-            callback( connect.responseText );\n\
-        } else if (connect.status >= 307 && connect.readyState === 4) {\n\
-            alert('error');\n\
-        }\n\
-    }\n\
-    connect.send(null);\n\
-}\n\
-window.addEventListener('message', (event) => {\n\
-    const SECURITY_SERVER = '" + SECURITY_SERVER + "'\n\
-    if (event.origin !== SECURITY_SERVER ){\n\
-        return;\n\
-    }\n\
-    if ( event.data === 'web3verifier_getnonce'){\n\
-        send( './web3verifier_getnonce', (nonce) => {\n\
-            let win = window.top.frames.web3verify;\n\
-            let host = window.location.hostname\n\
-            let port = window.location.port\n\
-            let url = ''\n\
-            if ( port === '80' ) {\n\
-                url = 'https://' + host\n\
-            } else {\n\
-                url = 'https://' + host + ':' + port\n\
-            }\n\
-            win.postMessage('nonce_url=' + 'nonce=' + nonce + '&' + 'topurl=' + url, SECURITY_SERVER);\n\
-        } )\n\
-    } else if ( event.data === 'web3verifier_getrequirement' ){\n\
-        send( './web3verifier_getrequirement', (requirement) => {\n\
-            let win = window.top.frames.web3verify;\n\
-            win.postMessage('requirement=' + requirement, SECURITY_SERVER);\n\
-        } )\n\
-    } else if ( event.data === 'request topurl' ){\n\
-        const topurl = window.top.location.href;\n\
-        let win = window.top.frames.web3verify;\n\
-        win.postMessage('encoded_top_url=' + encodeURIComponent(topurl), SECURITY_SERVER);\n\
-    } else {\n\
-        return;\n\
-    }\n\
-}, false);\n\
-        ")
-    }
-    public isRequestForPrepare( url: string ){
-        if ( url === '/web3verifier_proxy.js' || url === '/web3verifier_getnonce' || url === '/web3verifier_getrequirement' ){
-            return true
-        } else {
-            return false
-        }
-    }
-    public isRequestVerify( url: string ){
-        if ( url?.indexOf('/web3verifier_verify?') !== -1  ){
-            return true
-        } else {
-            return false
-        }
-    }
-    public response( url: string ): string {
-        if ( url === '/web3verifier_proxy.js' ){
-            console.log ( "    return script")
-            return this.proxyScript()
-        } else if ( url === '/web3verifier_getnonce' ){
-            let nonce: string = this.generateNonce()
-            console.log( "  nonce=" + nonce)
-            return nonce
-        } else if ( url === '/web3verifier_getrequirement' ){
-            let rtn = ""
-            let first = true
-            for ( const p of this.param ){
-                if ( first === false ){
-                    rtn += "?"
-                }
-                first = false
-                rtn  = "type="     + p.type        + "&"
-                rtn += "uiAmount=" + p.uiAmount    + "&"
-                rtn += "address="  + p.userAddress 
-            }
-            console.log("  requirement=" + rtn )
-            return rtn
-        } else {
-            throw Error("response error")
-        }
     }
     public async verify( url: string ): Promise<boolean> {
         let [srcpublickey, nonce_in_url, signature] = await parse(url)
