@@ -1,6 +1,6 @@
 import { CryptoLib } from './cryptolib';
 import { error } from './error';
-import { sign } from './verify_sign'
+import { sign, getContent } from './verify_sign'
 
 export type GUEST_ACCOUNT = "guest_account"
 export type GUEST_SECRET  = "guest_secret"
@@ -91,7 +91,8 @@ export class Account {
     }
 
     public async sign( serverpublickey:string, domain:string, nonce:string ): Promise<[string, string]>{
-        let [content,sig] = await sign( serverpublickey, domain, nonce, window.localStorage.getItem("secretkey")! )
+        let cont = getContent( serverpublickey, domain, nonce )
+        let [content,sig] = await sign( cont, window.localStorage.getItem("secretkey")! )
         return [content, sig]
     }
 

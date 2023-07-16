@@ -46,16 +46,6 @@ app.post('/create_session', async (req: any, res: Response) => {
             throw Error("verify error") 
         }
 
-/*
-        let serverpublickey          = ""
-        let domain                   = ""
-        let nonce                    = ""
-        if ( this_domain !== domain ){
-            console.log( this_domain + "!==" + domain )
-            throw Error("verify error") 
-        }
-*/
-
         req.session.regenerate( (err: any) =>{
             if ( err ){
                 throw Error("regenerate error")

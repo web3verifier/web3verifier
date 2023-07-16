@@ -8,17 +8,16 @@ let domain_key: string            = ":domain="
 let nonce_key: string             = ":nonce="
 let sign_key: string              = ":signature="
 
-function getContent( serverpublickey:string, domain:string, nonce:string ) {
+export function getContent( serverpublickey:string, domain:string, nonce:string ) {
     let content = path + server_publickey_key + serverpublickey + domain_key + domain + nonce_key + nonce
     return content
 }
 
-export async function sign( serverpublickey:string, domain:string, nonce:string, secretkey:string, ): Promise<[string, string]> {
+export async function sign( content:string, secretkey:string ): Promise<[string, string]> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    let content = getContent( serverpublickey, domain, nonce)
-
     console.log("    sign( content="+content+", secretkey="+secretkey+" )" )
+
     return [content, await cryptolib.sign(content, secretkey)]
 }
 
@@ -29,7 +28,7 @@ export async function verify( clientpublickey:string, content:string, signature:
         return false
     }
 
-    console.log("    verify( publickey="+clientpublickey+", content="+content+", signature="+ signature )
+    console.log("    verify( publickey="+clientpublickey+", content="+content+", signature="+signature+" )" )
 
     return await cryptolib.verify(content,clientpublickey,signature)
 }
