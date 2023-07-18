@@ -1,6 +1,7 @@
 import express, { Response } from 'express';
 import session from 'express-session';
 import { Verifier } from './verifier';
+import { server_publickey_key, domain_key, nonce_key } from './verify_sign';
 import http  from 'http';
 import https from 'https';
 import fs from 'fs';
@@ -41,6 +42,15 @@ app.post('/create_session', async (req: any, res: Response) => {
         let client_id                = req.body.client_id
         let content                  = req.body.content
         let content_signed_by_client = req.body.content_signed_by_client
+
+        let keyvalue = verifier.parse( content )
+        //keyvalue[server_publickey_key]
+        if ( verifier.check(keyvalue[nonce_key]) === false ){
+            throw Error("verify error " + nonce_key + " is not exist")
+        }
+        if ( this_domain !== keyvalue[domain_key]){
+            throw Error("verify error " + keyvalue[domain_key] + " is not " + this_domain) 
+        }
 
         if ( await verifier.verify( client_id, content, content_signed_by_client ) === false ) {
             throw Error("verify error") 
