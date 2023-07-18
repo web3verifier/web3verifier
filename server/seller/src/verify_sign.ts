@@ -16,7 +16,7 @@ export function getContent( serverpublickey:string, domain:string, nonce:string 
 export async function sign( content:string, secretkey:string ): Promise<[string, string]> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    console.log("    sign( content="+content+", secretkey="+secretkey+" )" )
+    console.log("sign( content="+content+", secretkey="+secretkey+" )" )
 
     return [content, await cryptolib.sign(content, secretkey)]
 }
@@ -28,7 +28,7 @@ export async function verify( clientpublickey:string, content:string, signature:
         return false
     }
 
-    console.log("    verify( publickey="+clientpublickey+", content="+content+", signature="+signature+" )" )
+    console.log("verify( publickey="+clientpublickey+", content="+content+", signature="+signature+" )" )
 
     return await cryptolib.verify(content,clientpublickey,signature)
 }
