@@ -10,32 +10,32 @@ export const domain_key: string            = "domain"
 export const nonce_key: string             = "nonce"
 
 export function getContent( serverpublickey:string, domain:string, nonce:string ) {
-    let content = path + delemeter + server_publickey_key+ "=" + serverpublickey + delemeter +  domain_key+"="+ domain + delemeter + nonce_key+"=" + nonce
-    return content
+    let message = path + delemeter + server_publickey_key+ "=" + serverpublickey + delemeter +  domain_key+"="+ domain + delemeter + nonce_key+"=" + nonce
+    return message
 }
 
 export function parse( message:string ){
-    let w = message.substring(path.length+":".length)
+    let w = message.substring(path.length+":".length, message.length)
     let words = split( w, ":", [server_publickey_key, domain_key, nonce_key])
     return words
 }
-export async function sign( content:string, secretkey:string ): Promise<[string, string]> {
+export async function sign( message:string, secretkey:string ): Promise<[string, string]> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    console.log("sign( content="+content+", secretkey="+secretkey+" )" )
+    console.log("sign( message="+message+", secretkey="+secretkey+" )" )
 
-    return [content, await cryptolib.sign(content, secretkey)]
+    return [message, await cryptolib.sign(message, secretkey)]
 }
 
-export async function verify( clientpublickey:string, content:string, signature:string ): Promise<boolean> {
+export async function verify( clientpublickey:string, message:string, signature:string ): Promise<boolean> {
     let cryptolib: CryptoLib = new SolanaLib()
 
-    if ( clientpublickey === "nothing" || content === "nothing" || signature === "nothing" ){
+    if ( clientpublickey === "nothing" || message === "nothing" || signature === "nothing" ){
         return false
     }
 
-    console.log("verify( publickey="+clientpublickey+", content="+content+", signature="+signature+" )" )
+    console.log("verify( publickey="+clientpublickey+", message="+message+", signature="+signature+" )" )
 
-    return await cryptolib.verify(content,clientpublickey,signature)
+    return await cryptolib.verify(message,clientpublickey,signature)
 }
 

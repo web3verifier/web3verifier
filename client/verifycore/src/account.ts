@@ -92,8 +92,8 @@ export class Account {
 
     public async sign( serverpublickey:string, domain:string, nonce:string ): Promise<[string, string]>{
         let cont = getContent( serverpublickey, domain, nonce )
-        let [content,sig] = await sign( cont, window.localStorage.getItem("secretkey")! )
-        return [content, sig]
+        let [message,sig] = await sign( cont, window.localStorage.getItem("secretkey")! )
+        return [message, sig]
     }
 
     public getSrcPrivatekey(): string {

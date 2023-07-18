@@ -40,11 +40,12 @@ app.post('/create_session', async (req: any, res: Response) => {
     console.log( req.body )
     try {
         let client_id                = req.body.client_id
-        let content                  = req.body.content
-        let content_signed_by_client = req.body.content_signed_by_client
+        let message                  = req.body.message
+        let message_signed_by_client = req.body.message_signed_by_client
 
-        let keyvalue = verifier.parse( content )
+        let keyvalue = verifier.parse( message )
         //keyvalue[server_publickey_key]
+
         if ( verifier.check(keyvalue[nonce_key]) === false ){
             throw Error("verify error " + nonce_key + " is not exist")
         }
@@ -52,7 +53,7 @@ app.post('/create_session', async (req: any, res: Response) => {
             throw Error("verify error " + keyvalue[domain_key] + " is not " + this_domain) 
         }
 
-        if ( await verifier.verify( client_id, content, content_signed_by_client ) === false ) {
+        if ( await verifier.verify( client_id, message, message_signed_by_client ) === false ) {
             throw Error("verify error") 
         }
 

@@ -23,7 +23,7 @@
                     }
                     xhr.send(null);
                 }
-                function createSession( client_id, content, content_signed_by_client ){
+                function createSession( client_id, message, message_signed_by_client ){
                     console.log("createSession")
 
                     // Send the idToken to the server for verification
@@ -40,8 +40,8 @@
                             }
                         }
                     };
-                    console.log( content_signed_by_client );
-                    xhr.send(JSON.stringify({ client_id, content, content_signed_by_client }));
+                    console.log( message_signed_by_client );
+                    xhr.send(JSON.stringify({ client_id, message, message_signed_by_client }));
                 }
             </script>
         </td></tr>
