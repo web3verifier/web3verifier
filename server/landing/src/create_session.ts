@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 
 const this_domain = "192.168.15.6"
+let server_publickey = "UNINIT_SERVER_PUBLICKEY"
 
 let port = 443
 if ( process.argv.length == 3 ) {
@@ -44,7 +45,6 @@ app.post('/create_session', async (req: any, res: Response) => {
         let message_signed_by_client = req.body.message_signed_by_client
 
         let keyvalue = verifier.parse( message )
-        //keyvalue[server_publickey_key]
 
         if ( verifier.check(keyvalue[nonce_key]) === false ){
             throw Error("verify error " + nonce_key + " is not exist")
@@ -62,6 +62,7 @@ app.post('/create_session', async (req: any, res: Response) => {
                 throw Error("regenerate error")
             }
             req.session.client_id = req.body.client_id
+            server_publickey = req.body.client_id
             res.sendStatus(200);
         })
     } catch (error) {
@@ -75,6 +76,22 @@ app.get('/get_nonce', (req, res) => {
     let randomkey = verifier.generateNonce()
     console.log(randomkey)
     res.send(randomkey)
+});
+
+app.set("view engine", "ejs");
+
+app.get('/seller.html', (req, res) => {
+    const filename = "/seller.html"
+    const filePath = path.join(__dirname+"/public", filename );
+    console.log( filePath )
+
+    // Set the appropriate content type and headers
+    res.setHeader('Content-Type', 'text/html');
+
+    var data = {
+        server_publickey: server_publickey
+    };
+    res.render( "./seller.ejs", data )
 });
 
 app.get('/:filename', (req, res) => {
