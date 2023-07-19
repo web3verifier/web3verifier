@@ -1,0 +1,172 @@
+<html>
+<head>
+<style> 
+body {
+  display: flex;
+    flex-direction: column;
+      align-items: stretch;
+        min-height: 100vh;
+          background: #232E34;
+            color: #F5F5F5;
+            }
+
+header, footer {
+  background: #2C3942;
+    padding: 20px;
+      text-align: center;
+      }
+
+.flex-container {
+  display: flex;
+    flex-wrap: wrap;
+      justify-content: space-between;
+      }
+
+.flex-item {
+  flex: 1;
+    padding: 20px;
+      box-sizing: border-box;
+        background: #344955;
+          margin: 10px;
+            border-radius: 8px;
+            }
+
+h2 {
+  color: #FFFFFF;
+    margin-bottom: 20px;
+    }
+
+code {
+  #font-family: "ms gothic";
+  font-size: 15px;
+    color: #C6C8CA;
+      white-space: pre-wrap;
+        word-break: break-word;
+        }
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .flex-container {
+      flex-direction: column;
+        }
+        }
+</style>
+  </head>
+  <body>
+	  <header>Login OK<BR></header>
+
+	  <BR>
+	  There are the all code samples to make session with zeroIDentify.<BR>
+	  <BR>
+
+  <div class="flex-container">
+
+    <div class="flex-item">
+          <h2>Client-side HTML Example</h2>
+	  <pre><code>
+&lt;div id="web3verifier"
+    verify_type            ="sign_in"
+    token_signed_by_server ="token"
+    callback_func          ="createSession" &gt
+&lt/div&gt
+&lt;script src='https://web3verifier.com/verify_v0.7.js'/&gt;
+&lt;script&gt;
+    function createSession( client_id, token_signed_by_client ){
+        console.log("createSession")
+
+        // Send the idToken to the server for verification
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', './create_session');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+	    if (xhr.readyState === XMLHttpRequest.DONE) {
+	        if (xhr.status === 200) {
+		    console.log( "Verification successful" )
+		    window.location.href = './ok.html';
+	        } else {
+		    console.log('Token verification failed');
+	        }
+	    }
+        };
+        console.log( token_signed_by_client );
+        xhr.send(JSON.stringify({ client_id, token_signed_by_client }));
+    }
+&lt;/script&gt;
+	  </code></pre>
+</div>
+    <div class="flex-item">
+          <h2>Server-side Javascript Example</h2>
+	  <pre><code>
+import express, { Response } from 'express';
+import session from 'express-session';
+import { Request, Verifier } from './verifier';
+import http  from 'http';
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
+
+let port = 443
+
+console.log( "port=" + port )
+
+const app = express();
+let verifier = new Verifier( [] )
+
+app.use(express.json());
+app.use(session({
+    secret: 'YOUR_SESSION_SECRET',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: true, // Use secure cookies (HTTPS)
+        httpOnly: true, // Prevent client-side JavaScript access to cookies
+    }
+}));
+app.post('/create_session', async (req: any, res: Response) => {
+    console.log( "in /create_session" )
+    console.log( "req.body=" )
+    console.log( req.body )
+    try {
+        //if ( await verifier.verify( req.body ) === false ){
+            //throw Error("verify error")
+        //}
+        req.session.regenerate( (err: any) =>{
+            if ( err ){
+                throw Error("regenerate error")
+            }
+            req.session.client_id = req.body.client_id
+            res.sendStatus(200);
+        })
+    } catch (error) {
+        console.error('Error verifying ID token:', error);
+        res.sendStatus(401);
+    }
+});
+
+app.get('/:filename', (req, res) => {
+    const fileName = req.params.filename;
+    console.log( fileName )
+    const filePath = path.join(__dirname, fileName);
+
+    // Set the appropriate content type and headers
+    res.setHeader('Content-Type', 'text/html');
+
+    // Send the file to the client
+    res.sendFile(filePath);
+});
+
+const sslOptions = {
+    key: fs.readFileSync('ssl/key.pem'),
+    cert: fs.readFileSync('ssl/cert.pem'),
+};
+
+
+
+https.createServer(sslOptions, app).listen(port, () => {
+    console.log('https server is running on port ' + port);
+});
+	  </code></pre>
+
+    </div>
+  </body>
+  </html>

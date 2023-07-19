@@ -1,0 +1,1 @@
+../../seller/src/verify_sign.ts

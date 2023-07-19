@@ -78,9 +78,9 @@ app.get('/get_nonce', (req, res) => {
 });
 
 app.get('/:filename', (req, res) => {
-    const fileName = req.params.filename;
-    console.log( fileName )
-    const filePath = path.join(__dirname, fileName);
+    const filename= req.params.filename;
+    const filePath = path.join(__dirname+"/public", filename );
+    console.log( filePath )
 
     // Set the appropriate content type and headers
     res.setHeader('Content-Type', 'text/html');
@@ -89,9 +89,10 @@ app.get('/:filename', (req, res) => {
     res.sendFile(filePath);
 });
 
+
 const sslOptions = {
-    key: fs.readFileSync('ssl/key.pem'),
-    cert: fs.readFileSync('ssl/cert.pem'),
+    key: fs.readFileSync('./public/ssl/key.pem'),
+    cert: fs.readFileSync('./public/ssl/cert.pem'),
 };
 
 

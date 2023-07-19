@@ -14,10 +14,12 @@ fi
 
 #./node_modules/.bin/ts-node-dev --respawn --poll ./src/server_example1.ts $Port
 
+cd ./src
 while true; do
-    ps aux | grep "node ./src/create_session_example.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
-    ./node_modules/.bin/tsc
-    ./node_modules/.bin/node ./src/create_session_example.js $Port &
+    ps aux | grep "node ./create_session_example.js" | grep -v grep | awk '{ print "kill -9", $2 }' | sh
+    .././node_modules/.bin/tsc
+    .././node_modules/.bin/node ./create_session_example.js $Port &
 
-    inotifywait -e modify ./src/*.ts
+  inotifywait -e modify ./*.ts
 done
+cd ..

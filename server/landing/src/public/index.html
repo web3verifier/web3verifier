@@ -95,35 +95,49 @@
         <font color=#74BEE1>The website owner can offer a trial to visitors after verifying the user.</font>
                       
         <div class="space"></div>
-                      
-            <div id="web3verifier"
-                 verify_type            ="sign_in"
-                 token_signed_by_server ="token"
-                 callback_func          ="createSession" >
-            </div>
-            <script src='https://web3verifier.com/verify_v0.7.js'></script>
-            <script>
-                function createSession( client_id, token_signed_by_client ){
-                    console.log("createSession")
 
-                    // Send the idToken to the server for verification
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', './create_session');
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                            if (xhr.status === 200) {
-                                console.log( "Verification successful" )
-                                window.location.href = './seller.html';
-                            } else {
-                                console.log('Token verification failed');
-                            }
-                        }
-                    };
-                    console.log( token_signed_by_client );
-                    xhr.send(JSON.stringify({ client_id, token_signed_by_client }));
+        <div id="web3verifier"
+             verify_type       = "sign_in"
+             get_nonce_func    = "getnonce"
+             button_click_func = "createSession"
+             server_publickey  = "SERVER_PUBLICKEY" >
+        </div>
+        <script src='https://192.168.15.6:4433/verify_v0.7.js'></script>
+        <script>
+            function getnonce( callback ){
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', './get_nonce');
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        callback(xhr.responseText)
+                    } else if (xhr.status >= 307 && xhr.readyState === 4) {
+                        alert('error');
+                    }
                 }
-            </script>
+                xhr.send(null);
+            }
+            function createSession( client_id, message, message_signed_by_client ){
+                console.log("createSession")
+
+                // Send the idToken to the server for verification
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', './create_session');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log( "Verification successful" )
+                            window.location.href = './seller.html';
+                        } else {
+                            console.log('Create Session failed');
+                        }
+                    }
+                };
+                console.log( message_signed_by_client );
+                xhr.send(JSON.stringify({ client_id, message, message_signed_by_client }));
+            }
+        </script>
+
         <BR>
 
     </div>

@@ -1,17 +1,32 @@
 #!/bin/bash
 set -eux
 
-if [ $# != 1 ]; then
-    echo "usage: ./local_test.sh ThisHostIPAddress"
+if [ $# != 1 ] && [ $# != 2 ]; then
+    echo "usage: ./local_test.sh ThisHostIPAddress [landing]"
     exit
 fi
 
 address=$1
 echo $address
+if [ $# = 2 ]; then
+    if [ $2 != "landing" ]; then
+        echo "usage: ./local_test.sh ThisHostIPAddress [landing]"
+        exit
+    fi
+    landing=$2
+    echo $landing
+else
+    landing="nothing"
+fi
+echo $landing
 
 git checkout ./server/seller/src/url.ts
 
-sed -i "s/web3verifier.com/$address:4433/g"          ./server/seller/src/url.ts
+sed -i "s/web3verifier.com/$address:4433/g" ./server/seller/src/url.ts
+
+if [ $landing = "landing" ]; then
+    sed -i "s/web3verifier.com/$address:4433/g" ./server/landing/src/public/index.html
+fi
 
 ps aux | grep webpack| grep -v grep | awk '{ print "kill -9", $2 }' | sh
 
@@ -33,6 +48,16 @@ cd ./client/proxy/
     ./run.sh &
 cd ../../
 
-cd ./server/seller/
-./run.sh 44300
+echo "proxy start end"
+
+if [ $landing = "landing" ]; then
+    cd ./server/landing/
+    ./run.sh 44300
+else
+    echo "cd seller"
+    cd ./server/seller/
+    ./run.sh 44300
+fi
+
+echo "allfinish"
 

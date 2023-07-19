@@ -1,0 +1,1 @@
+../../seller/src/verifier.ts

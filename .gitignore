@@ -10,6 +10,7 @@ client/proxy/src/*.js
 client/proxy/node_modules
 server/seller/node_modules
 server/seller/src/*.js
+server/landing/src/*.js
 tool/src/*.js
 tool/node_modules
 
