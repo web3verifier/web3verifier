@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import { Verifier } from './verifier';
 import { server_publickey_key, domain_key, nonce_key } from './verify_sign';
@@ -6,9 +6,16 @@ import http  from 'http';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import { SessionData } from 'express-session';
 
 const this_domain = "192.168.15.6"
-let server_publickey = "UNINIT_SERVER_PUBLICKEY"
+
+
+declare module 'express-session' {
+    export interface SessionData {
+        client_publickey : { [key: string]: any }; // Can be any user object you'd like to store
+    }
+}
 
 let port = 443
 if ( process.argv.length == 3 ) {
@@ -35,12 +42,22 @@ app.use(session({
     }
 }));
 
+
+
+function requireLogin(req: any, res: Response, next: NextFunction){
+    if (!req.session.client_publickey) {
+        res.redirect('/index.html');
+    } else {
+        next();
+    }
+}
+
 app.post('/create_session', async (req: any, res: Response) => {
     console.log( "in /create_session" )
     console.log( "req.body=" )
     console.log( req.body )
     try {
-        let client_id                = req.body.client_id
+        let client_publickey         = req.body.client_id
         let message                  = req.body.message
         let message_signed_by_client = req.body.message_signed_by_client
 
@@ -53,7 +70,7 @@ app.post('/create_session', async (req: any, res: Response) => {
             throw Error("verify error " + keyvalue[domain_key] + " is not " + this_domain) 
         }
 
-        if ( await verifier.verify( client_id, message, message_signed_by_client ) === false ) {
+        if ( await verifier.verify( client_publickey, message, message_signed_by_client ) === false ) {
             throw Error("verify error") 
         }
 
@@ -61,8 +78,7 @@ app.post('/create_session', async (req: any, res: Response) => {
             if ( err ){
                 throw Error("regenerate error")
             }
-            req.session.client_id = req.body.client_id
-            server_publickey = req.body.client_id
+            req.session.client_publickey = client_publickey
             res.sendStatus(200);
         })
     } catch (error) {
@@ -80,7 +96,7 @@ app.get('/get_nonce', (req, res) => {
 
 app.set("view engine", "ejs");
 
-app.get('/seller.html', (req, res) => {
+app.get('/seller.html', requireLogin, (req, res) => {
     const filename = "/seller.html"
     const filePath = path.join(__dirname+"/public", filename );
     console.log( filePath )
@@ -89,7 +105,7 @@ app.get('/seller.html', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
 
     var data = {
-        server_publickey: server_publickey
+        server_publickey: req.session.client_publickey
     };
     res.render( "./seller.ejs", data )
 });
