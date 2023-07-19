@@ -64,14 +64,27 @@ code {
     <div class="flex-item">
           <h2>Client-side HTML Example</h2>
 	  <pre><code>
-&lt;div id="web3verifier"
-    verify_type            ="sign_in"
-    token_signed_by_server ="token"
-    callback_func          ="createSession" &gt
-&lt/div&gt
-&lt;script src='https://web3verifier.com/verify_v0.7.js'/&gt;
+&lt;div id="zeroIDentify"
+     verify_type       = "sign_in"
+     get_nonce_func    = "getnonce"
+     button_click_func = "createSession"
+     server_publickey  = "SERVER_PUBLICKEY" &gt;
+&lt;/div&gt;
+&lt;script src='https://zeroidentify.com/verify_v0.7.js'&gt;&lt;/script&gt;
 &lt;script&gt;
-    function createSession( client_id, token_signed_by_client ){
+    function getnonce( callback ){
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', './get_nonce');
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                callback(xhr.responseText)
+            } else if (xhr.status >= 307 && xhr.readyState === 4) {
+                alert('error');
+            }
+        }
+        xhr.send(null);
+    }
+    function createSession( client_id, message, message_signed_by_client ){
         console.log("createSession")
 
         // Send the idToken to the server for verification
@@ -79,17 +92,17 @@ code {
         xhr.open('POST', './create_session');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function() {
-	    if (xhr.readyState === XMLHttpRequest.DONE) {
-	        if (xhr.status === 200) {
-		    console.log( "Verification successful" )
-		    window.location.href = './ok.html';
-	        } else {
-		    console.log('Token verification failed');
-	        }
-	    }
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log( "Verification successful" )
+                    window.location.href = './seller.html';
+                } else {
+                    console.log('Create Session failed');
+                }
+            }
         };
-        console.log( token_signed_by_client );
-        xhr.send(JSON.stringify({ client_id, token_signed_by_client }));
+        console.log( message_signed_by_client );
+        xhr.send(JSON.stringify({ client_id, message, message_signed_by_client }));
     }
 &lt;/script&gt;
 	  </code></pre>
@@ -99,22 +112,25 @@ code {
 	  <pre><code>
 import express, { Response } from 'express';
 import session from 'express-session';
-import { Request, Verifier } from './verifier';
+import { Verifier } from './verifier';
+import { server_publickey_key, domain_key, nonce_key } from './verify_sign';
 import http  from 'http';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+
+const this_domain = "192.168.15.6" // enter your domain
 
 let port = 443
 
 console.log( "port=" + port )
 
 const app = express();
-let verifier = new Verifier( [] )
+let verifier = new Verifier()
 
 app.use(express.json());
 app.use(session({
-    secret: 'YOUR_SESSION_SECRET',
+    secret: 'YOUR_SESSION_SECRET', // any random key is ok
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -122,14 +138,30 @@ app.use(session({
         httpOnly: true, // Prevent client-side JavaScript access to cookies
     }
 }));
+
 app.post('/create_session', async (req: any, res: Response) => {
     console.log( "in /create_session" )
     console.log( "req.body=" )
     console.log( req.body )
     try {
-        //if ( await verifier.verify( req.body ) === false ){
-            //throw Error("verify error")
-        //}
+        let client_id                = req.body.client_id
+        let message                  = req.body.message
+        let message_signed_by_client = req.body.message_signed_by_client
+
+        let keyvalue = verifier.parse( message )
+        //keyvalue[server_publickey_key]
+
+        if ( verifier.check(keyvalue[nonce_key]) === false ){
+            throw Error("verify error " + nonce_key + " is not exist")
+        }
+        if ( this_domain !== keyvalue[domain_key]){
+            throw Error("verify error " + keyvalue[domain_key] + " is not " + this_domain) 
+        }
+
+        if ( await verifier.verify( client_id, message, message_signed_by_client ) === false ) {
+            throw Error("verify error") 
+        }
+
         req.session.regenerate( (err: any) =>{
             if ( err ){
                 throw Error("regenerate error")
@@ -143,10 +175,17 @@ app.post('/create_session', async (req: any, res: Response) => {
     }
 });
 
+app.get('/get_nonce', (req, res) => {
+    console.log( "in /getnonce" )
+    let randomkey = verifier.generateNonce()
+    console.log(randomkey)
+    res.send(randomkey)
+});
+
 app.get('/:filename', (req, res) => {
-    const fileName = req.params.filename;
-    console.log( fileName )
-    const filePath = path.join(__dirname, fileName);
+    const filename= req.params.filename;
+    const filePath = path.join(__dirname+"/public", filename );
+    console.log( filePath )
 
     // Set the appropriate content type and headers
     res.setHeader('Content-Type', 'text/html');
@@ -155,16 +194,17 @@ app.get('/:filename', (req, res) => {
     res.sendFile(filePath);
 });
 
-const sslOptions = {
-    key: fs.readFileSync('ssl/key.pem'),
-    cert: fs.readFileSync('ssl/cert.pem'),
-};
 
+const sslOptions = {
+    key: fs.readFileSync('./public/ssl/key.pem'),
+    cert: fs.readFileSync('./public/ssl/cert.pem'),
+};
 
 
 https.createServer(sslOptions, app).listen(port, () => {
     console.log('https server is running on port ' + port);
 });
+
 	  </code></pre>
 
     </div>
