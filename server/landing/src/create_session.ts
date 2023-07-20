@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { SessionData } from 'express-session';
 
-const this_domain = "192.168.15.6"
+const this_domain = "web3verifier.com"
 
 
 declare module 'express-session' {
