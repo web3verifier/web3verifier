@@ -9,11 +9,9 @@ import { AmountLabel } from './AmountLabel';
 import { CallbackButton } from './CallbackButton';
 import { Message } from './Message';
 import { useState, useReducer } from 'react';
-import { Requirement } from './Requirement'
 import { LinkOnParent } from './LinkOnParent';
 import { useEffect } from 'react';
-import { useRef } from 'react';
-import { split, KeyValue } from './util';
+import { split } from './util';
 import { SOLANA_BLOCKCHAIN_SERVER } from './url';
 import { SECURITY_SERVER } from './url';
 import { WEB3VERIFY_VERSION } from './version';
@@ -47,8 +45,6 @@ export const Verify = () => {
     const [PrintPublickey,        setPublickey       ] = useState("")
     const [isGenerateOKMsgVisible,setIsGenerateOKMsgVisiable   ] = useState(false)
     const [isDisableVerifyButton, setDisableVerifyButton] = useState(true)
-    const [RequestKeyValues,  setRequestKeyValue]      = useState<KeyValue[]>([])
-    const RefRequestKeyValues                          = useRef<KeyValue[]>([])
     const [ButtonCaption,        setButtonCaption ] = useState("will be verified")
     const [VerifyType,           setVerifyType    ] = useState("not set verify type")
 
@@ -195,7 +191,6 @@ export const Verify = () => {
                             <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                         </div>
                         <div className="Window_RowDirection Window_RowDirection_Verify">
-                            <Requirement    requirements={RequestKeyValues}  visible={true} />
                             <CallbackButton caption={ButtonCaption}          visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
                         </div>
                     </div>
