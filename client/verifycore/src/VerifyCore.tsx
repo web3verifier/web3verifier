@@ -139,7 +139,7 @@ export const Verify = () => {
                     <div className="Window_FirstLine Window_FirstLine_Verify">
                         <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="Verify_Message1"  text="Calculating publickeys starting with Z" visible={true}/>
+                    <Message className="Verify_Message1"  text="The secret key is generating, the public key of which begins with the letter Z." visible={true}/>
                     <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
                 </div>
             );
@@ -175,7 +175,7 @@ export const Verify = () => {
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                             </div>
-                            <Message className="Verify_Message1"  text="Calculating publickeys starting with ZZ" visible={true}/>
+                            <Message className="Verify_Message1"  text="The secret key is calculating, the public key of which begins with the letter ZZ." visible={true}/>
                             <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
                         </div>
                     );
@@ -189,7 +189,7 @@ export const Verify = () => {
                             </div>
                             <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
                             <Message className="Verify_Publickey" text={PrintPublickey}                               visible={true}/>
-                            <Message className="Verify_Message2"  text="  generate OK!" visible={true}/>
+                            <Message className="Verify_Message2"  text="  calculate OK!" visible={true}/>
                         </div>
                     );
                 } else {
