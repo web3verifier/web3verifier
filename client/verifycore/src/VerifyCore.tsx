@@ -56,8 +56,8 @@ export const Verify = () => {
     }
 
     const setType = ( type:string ) => {
-        if ( type === "sign_in" ){
-            setButtonCaption("Sign-In")
+        if ( type === "log_in" ){
+            setButtonCaption("Log In")
             setVerifyType(type)
             setDisableVerifyButton(false)
         }
@@ -103,7 +103,7 @@ export const Verify = () => {
     }, [])
 
     const web3Verify = async () => {
-        if ( VerifyType === "sign_in" ){
+        if ( VerifyType === "log_in" ){
             window.top!.postMessage("web3verifier_getparam@" , "*");
         }
     }
@@ -128,8 +128,8 @@ export const Verify = () => {
                         <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
                     <div className="Window_RowDirection Window_RowDirection_Verify">
-                        <CallbackButton caption="Create New Account"     visible={true}  onclick={createAccount} disabled={false}/>
-                        <CallbackButton caption="Already Have a Account" visible={true}  onclick={haveAccount}   disabled={false}/>
+                        <CallbackButton caption="Generate New Root Secretkey" visible={true}  onclick={createAccount} disabled={false}/>
+                        <CallbackButton caption="Already Have Root Secretkey" visible={true}  onclick={haveAccount}   disabled={false}/>
                     </div>
                 </div>
             );
