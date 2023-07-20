@@ -40,7 +40,7 @@ window.addEventListener('message', (event) => {
         let buttonclickfunc = el!.getAttribute("button_click_func")
         let getnoncefunc    = el!.getAttribute("get_nonce_func")
         let serverpublickey = el!.getAttribute("server_publickey")
-        let domain          = document.domain
+        let domain          = document.location.hostname
         eval(getnoncefunc)( (nonce) => {
             let msg = "callback_func=" + buttonclickfunc + "&server_publickey=" + serverpublickey + "&domain=" + domain + "&nonce=" + nonce 
             postMessage(iframe, msg) 
