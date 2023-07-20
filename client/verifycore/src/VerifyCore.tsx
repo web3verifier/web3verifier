@@ -19,7 +19,7 @@ import { WEB3VERIFY_VERSION } from './version';
 export const Verify = () => {
 
     const rootAccount  = new Account("root", new SolanaLib() )
-    const childAccount = new Account("child", new SolanaLib() )
+    const childAccount = new Account("child_"+window.location.hostname, new SolanaLib() )
 
     const blockChain = new SolanaBlockChain(SOLANA_BLOCKCHAIN_SERVER)
 
