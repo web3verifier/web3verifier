@@ -45,10 +45,6 @@ export class Account {
 
         document.body.removeChild(link);
     }
-    private async fixSecretkey(): Promise<void> {
-        this.setSecret( this.tmpSecretkey )
-        this.download( this.tmpSecretkey )
-    }
 
     private FixChar: string = "Z"
     private async tryToCreateSecretkey(VCount:number): Promise<[boolean,string]> {
@@ -73,7 +69,7 @@ export class Account {
         }
 
     }
-    public async generateSecretkey(Vcount:number, setPrintPublickey: (arg0: string) => void,callback1: () => void,callback2: () => void) {
+    public async generateSecretkey(Vcount:number, setPrintPublickey: (arg0: string) => void, showMsg: (arg0: boolean) => void, isDownload: boolean) {
         let rtn: [boolean, string] = [false,""]
         for ( let i =0 ; i < 128 ; i++ ){
             rtn = await this.tryToCreateSecretkey(Vcount)
@@ -84,13 +80,16 @@ export class Account {
 
         if ( result == false ){
             setTimeout( ()=> {
-                this.generateSecretkey(Vcount, setPrintPublickey, callback1, callback2)
+                this.generateSecretkey(Vcount, setPrintPublickey, showMsg, isDownload)
             }, 0)
         } else {
-            this.fixSecretkey()
-            callback1()
+            showMsg(true)
+            this.setSecret( this.tmpSecretkey )
+            if ( isDownload === true ){
+                this.download( this.tmpSecretkey )
+            }
             setTimeout( () => {
-                callback2()
+                showMsg(false)
             }, 5000)
         }
     }

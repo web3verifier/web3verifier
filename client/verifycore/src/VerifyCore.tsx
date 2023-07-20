@@ -38,23 +38,23 @@ export const Verify = () => {
         return false
     }
 
-    const [Amount, setAmount                         ] = useState("0")
-    const [isAmountLabelVisible,  showAmountLabel    ] = useReducer( _showAmountLabel, false )
-    const [isFirstButtonsVisible, hideFirstButtons    ] = useReducer( _hideFirstButtons, true )
-    const [isCalcChildKeyBtnVisible, hideCalcChildBtn ] = useReducer( _hideCalcChildBtn, true )
-    const [PrintPublickey,        setPublickey       ] = useState("")
-    const [isGenerateOKMsgVisible,setIsGenerateOKMsgVisiable   ] = useState(false)
-    const [isDisableVerifyButton, setDisableVerifyButton] = useState(true)
-    const [ButtonCaption,        setButtonCaption ] = useState("will be verified")
-    const [VerifyType,           setVerifyType    ] = useState("not set verify type")
+    const [Amount,                   setAmount]             = useState("0")
+    const [isAmountLabelVisible,     showAmountLabel]       = useReducer( _showAmountLabel, false )
+    const [isFirstButtonsVisible,    hideFirstButtons]      = useReducer( _hideFirstButtons, true )
+    const [isCalcChildKeyBtnVisible, hideCalcChildBtn]      = useReducer( _hideCalcChildBtn, true )
+    const [PrintPublickey,           setPublickey]          = useState("")
+    const [isGenerateRootOKMsg ,     setGenerateRootOKMsg]  = useState( false )
+    const [isGenerateChildOKMsg ,    setGenerateChildOKMsg] = useState( false )
+    const [ButtonCaption,            setButtonCaption]      = useState("will be verified")
+    const [VerifyType,               setVerifyType]         = useState("not set verify type")
 
     const createRootAccount = () => {
         hideFirstButtons()
-        rootAccount.generateSecretkey(1, setPublickey, showMsg, hideMsg)
+        rootAccount.generateSecretkey(1, setPublickey, setGenerateRootOKMsg, true )
     }
     const createChildAccount = () => {
         hideCalcChildBtn()
-        childAccount.generateSecretkey(2, setPublickey, showMsg, hideMsg)
+        childAccount.generateSecretkey(1, setPublickey, setChildMsg, false)
     }
     const haveRootAccount = () => {
         window.top!.postMessage("request topurl@", "*");
@@ -64,7 +64,6 @@ export const Verify = () => {
         if ( type === "log_in" ){
             setButtonCaption("Log In")
             setVerifyType(type)
-            setDisableVerifyButton(false)
         }
     }
 
@@ -112,12 +111,9 @@ export const Verify = () => {
             window.top!.postMessage("web3verifier_getparam@" , "*");
         }
     }
-    const hideMsg = () => {
-        setIsGenerateOKMsgVisiable(false)
+    const setChildMsg = (show:boolean) => {
+        setGenerateChildOKMsg(show)
         prepare()
-    }
-    const showMsg = () => {
-        setIsGenerateOKMsgVisiable(true)
     }
     const prepare = () => {
         window.top!.postMessage("web3verifier_getverifytype@", "*");
@@ -149,7 +145,7 @@ export const Verify = () => {
             );
         }
     } else {
-        if ( isGenerateOKMsgVisible === true ){
+        if ( isGenerateRootOKMsg === true ){
             return(
                 <div className="Window Window_Verify">
                     <div className="Window_FirstLine Window_FirstLine_Verify">
@@ -169,7 +165,7 @@ export const Verify = () => {
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
                             <div className="Window_RowDirection Window_RowDirection_Verify">
-                                <CallbackButton caption={"Calculate Child Secretkey to Sign-in"}          visible={true}  onclick={createChildAccount}   disabled={isDisableVerifyButton}/>
+                                <CallbackButton caption={"Calculate Child Secretkey to Sign-in"}          visible={true}  onclick={createChildAccount} />
                             </div>
                         </div>
                     );
@@ -185,16 +181,29 @@ export const Verify = () => {
                     );
                 }
             } else {
-                return(
-                    <div className="Window Window_Verify">
-                        <div className="Window_FirstLine Window_FirstLine_Verify">
-                            <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                if ( isGenerateChildOKMsg === true ){
+                    return(
+                        <div className="Window Window_Verify">
+                            <div className="Window_FirstLine Window_FirstLine_Verify">
+                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                            </div>
+                            <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
+                            <Message className="Verify_Publickey" text={PrintPublickey}                               visible={true}/>
+                            <Message className="Verify_Message2"  text="  generate OK!" visible={true}/>
                         </div>
-                        <div className="Window_RowDirection Window_RowDirection_Verify">
-                            <CallbackButton caption={ButtonCaption}          visible={true}  onclick={web3Verify}   disabled={isDisableVerifyButton}/>
+                    );
+                } else {
+                    return(
+                        <div className="Window Window_Verify">
+                            <div className="Window_FirstLine Window_FirstLine_Verify">
+                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                            </div>
+                            <div className="Window_RowDirection Window_RowDirection_Verify">
+                                <CallbackButton caption={ButtonCaption}          visible={true}  onclick={web3Verify}  />
+                            </div>
                         </div>
-                    </div>
-                );
+                    );
+                }
             }
         }
     }
