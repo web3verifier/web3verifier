@@ -28,7 +28,7 @@ export const Pay = () => {
 
     const pay = async () => {
         setisDisableButton(true)
-        const account = new Account(new SolanaLib() )
+        const account = new Account( "root", new SolanaLib() )
         const privatekey = account.getSrcPrivatekey()
         const [result, errmsg]= await payUSDC( privatekey, args["address"], args["uiAmount"] )
         if ( result === true ){

@@ -15,7 +15,7 @@ export const Router = () => {
     const param = window.location.search
     console.log(window.location.search)
 
-    let account = new Account( new SolanaLib() )
+    let account = new Account( "root", new SolanaLib() )
     let src = account.getSrcPublickey()
 
     if ( src === "GUEST_ACCOUNT" ){

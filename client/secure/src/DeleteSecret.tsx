@@ -12,7 +12,7 @@ export const DeleteSecret = ( props: { returnBackURL: string; } ) => {
     const [isButtonVisible, hideButton] = useReducer(_hideButton, true)
     const [comment, setComment]         = useState( "Is it really ok to delete current secretkey from this browser?" )
     const deleteSecret = () => {
-        const account = new Account( new SolanaLib() )
+        const account = new Account( "root", new SolanaLib() )
         account.deleteAllKey()
         hideButton()
         setComment("Secretkey have been deleted")

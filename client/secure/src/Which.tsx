@@ -10,7 +10,7 @@ import { WEB3VERIFY_VERSION } from "./version";
 export const Which = () => {
 
     const a = () => {
-        const account = new Account(new SolanaLib() )
+        const account = new Account("root", new SolanaLib() )
         const accountSecurity = new AccountSecurity(new SolanaLib() )
         account.download(accountSecurity.getSecret())
         window.location.href = "./secure.html_"+WEB3VERIFY_VERSION+"?downloadsecret"

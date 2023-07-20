@@ -9,13 +9,17 @@ export type OK = "OK"
 export class Account {
     cryptolib: CryptoLib
     tmpSecretkey: string
-    constructor(cryptolib: CryptoLib) {
+    localStorageSecretName: string
+    localStoragePublicName: string
+    constructor(localStorageName: string, cryptolib: CryptoLib) {
         this.cryptolib = cryptolib
         this.tmpSecretkey = "NotSetYet"
+        this.localStorageSecretName = localStorageName + "secretkey"
+        this.localStoragePublicName = localStorageName + "publickey"
     }
     private setSecret(secretkey: string): [boolean, string] {
-        if ( window.localStorage.getItem("secretkey") !== null ) {
-            const e = new Error("localstorage.getItem(secretkey) must be null")
+        if ( window.localStorage.getItem(this.localStorageSecretName) !== null ) {
+            const e = new Error("localstorage.getItem(" + this.localStorageSecretName + ") must be null")
             error( e )
             throw e
         }
@@ -24,11 +28,11 @@ export class Account {
         } catch(e) {
             return [false, e.message]
         }
-        window.localStorage.setItem("secretkey", secretkey)
+        window.localStorage.setItem(this.localStorageSecretName, secretkey)
         return [true, ""]
     }
     private setPublickey(publickey: string): void {
-        window.localStorage.setItem("publickey", publickey)
+        window.localStorage.setItem(this.localStoragePublicName, publickey)
     }
     public download(secretkey:string) {
         var link = document.createElement('a');
@@ -46,20 +50,33 @@ export class Account {
         this.download( this.tmpSecretkey )
     }
 
-    private async tryToCreateSecretkey(): Promise<[boolean,string]> {
+    private FixChar: string = "Z"
+    private async tryToCreateSecretkey(VCount:number): Promise<[boolean,string]> {
         this.tmpSecretkey = this.cryptolib.createSecretkey()
         let publickey = this.cryptolib.getPublickeyFromSecret(this.tmpSecretkey)
-        if ( publickey[0] === "V" && publickey[1] === "V" ) {
-        //if ( publickey[0] === "V" ) {
-            return [true, publickey];
+
+        if ( VCount === 2 ){
+            if ( publickey[0] === this.FixChar && publickey[1] === this.FixChar ) {
+                return [true, publickey];
+            } else {
+                return [false, publickey];
+            }
+        } else if ( VCount === 1 ){
+            if ( publickey[0] === this.FixChar ) {
+                return [true, publickey];
+            } else {
+                return [false, publickey];
+            }
+
         } else {
-            return [false, publickey];
+            throw Error("not proper VCount")
         }
+
     }
-    public async generateSecretkey(setPrintPublickey: (arg0: string) => void,callback1: () => void,callback2: () => void) {
+    public async generateSecretkey(Vcount:number, setPrintPublickey: (arg0: string) => void,callback1: () => void,callback2: () => void) {
         let rtn: [boolean, string] = [false,""]
         for ( let i =0 ; i < 128 ; i++ ){
-            rtn = await this.tryToCreateSecretkey()
+            rtn = await this.tryToCreateSecretkey(Vcount)
             if ( rtn[0] == true ) break
         }
         let result    = rtn[0]
@@ -67,7 +84,7 @@ export class Account {
 
         if ( result == false ){
             setTimeout( ()=> {
-                this.generateSecretkey(setPrintPublickey, callback1, callback2)
+                this.generateSecretkey(Vcount, setPrintPublickey, callback1, callback2)
             }, 0)
         } else {
             this.fixSecretkey()
@@ -78,11 +95,11 @@ export class Account {
         }
     }
     public deleteAllKey(): void {
-        window.localStorage.removeItem("publickey")
-        window.localStorage.removeItem("secretkey")
+        window.localStorage.removeItem(this.localStoragePublicName)
+        window.localStorage.removeItem(this.localStorageSecretName)
     }
     public getSrcPublickey(): string | GUEST_ACCOUNT {
-        const publickey: string | null = window.localStorage.getItem("publickey")
+        const publickey: string | null = window.localStorage.getItem(this.localStoragePublicName)
         if (publickey !== null) {
             return publickey
         } else {
@@ -92,12 +109,12 @@ export class Account {
 
     public async sign( serverpublickey:string, domain:string, nonce:string ): Promise<[string, string]>{
         let cont = getContent( serverpublickey, domain, nonce )
-        let [message,sig] = await sign( cont, window.localStorage.getItem("secretkey")! )
+        let [message,sig] = await sign( cont, window.localStorage.getItem(this.localStorageSecretName)! )
         return [message, sig]
     }
 
     public getSrcPrivatekey(): string {
-        return window.localStorage.getItem("secretkey")!
+        return window.localStorage.getItem(this.localStorageSecretName)!
     }
 
 }
