@@ -91,10 +91,11 @@ private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
         return arr;
     }
     private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
+        let c: Uint8Array
         for ( let i=0; i < a.length; i++ ){
-            a[i] += b[i]
+            c[i] = a[i] + b[i]
         }
-        return a
+        return c
     }
 
     private async tryToCalculateSecretkey(rootSecretkey:string, n:number, firstPublicChars:string): Promise<[boolean,string]> {
