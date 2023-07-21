@@ -29,7 +29,7 @@ let server = https.createServer(options, async function(request, response) {
             console.log("secure communication error")
             console.log(error)
         })
-    } else if ( pathname?.indexOf("verify_core") != -1 ){
+    } else if ( pathname?.indexOf("identify_core") != -1 ){
         axios.get('http://localhost:8090' + pathname)
         .then( (results) => {
             //console.log(results.status)
@@ -38,10 +38,10 @@ let server = https.createServer(options, async function(request, response) {
             response.end(results.data)
         })
         .catch( (error) => {
-            console.log("verify_core communication error")
+            console.log("identify_core communication error")
             console.log(error)
         })
-    } else if ( pathname?.indexOf("verify") != -1 ){
+    } else if ( pathname?.indexOf("identify") != -1 ){
         axios.get('http://localhost:8080' + pathname)
         .then( (results) => {
             //console.log(results.status)
@@ -50,7 +50,7 @@ let server = https.createServer(options, async function(request, response) {
             response.end(results.data)
         })
         .catch( (error) => {
-            console.log("verify communication error")
+            console.log("identify communication error")
             console.log(error)
         })
     } else {
