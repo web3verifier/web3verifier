@@ -185,8 +185,9 @@ export const Verify = () => {
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Verify_Message1"  text={"The secret key is calculating, the public key of which begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
+                            <Message className="Verify_Message1"  text={"The secret key is calculating."} visible={true}/>
                             <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
+                            <Message className="Verify_Message2"  text={"Finding public key begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
                         </div>
                     );
                 }
