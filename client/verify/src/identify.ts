@@ -60,6 +60,9 @@ window.addEventListener('message', (event) => {
         let reqs = split( reqs_string, "&", ["client_id", "message", "signature_by_client", "callback_func"] )
         let funcname = reqs["callback_func"]
         eval(funcname)( reqs["client_id"], reqs["message"], reqs["signature_by_client"] )
+    } else if ( event.data === 'zeroidentify_topurl@' ){
+        const topurl = window.top!.location.href;
+        postMessage(iframe, 'encoded_top_url=' + encodeURIComponent(topurl));
     } else {
         return;
     }

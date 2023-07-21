@@ -60,7 +60,7 @@ export const Identify = () => {
         childAccount.calculateSecretkey(rootAccount.getSrcPrivatekey(), 1, hostname[0]+hostname[1], setPublickey, setChildMsg) // no two start words
     }
     const haveRootAccount = () => {
-        window.top!.postMessage("request topurl@", "*");
+        window.top!.postMessage("zeroidentify_topurl@", "*");
     }
 
     const setType = ( Identifytype:string ) => {
@@ -87,6 +87,12 @@ export const Identify = () => {
         return msg
     }
 
+    const handle_jump = async ( client_rtn: string ) => {
+        let reqs = split( client_rtn, "&", ["encoded_top_url"] )
+        const encoded_top_url:string = decodeURIComponent( reqs["encoded_top_url"] ) 
+        window.top!.location.href = SECURITY_SERVER + "/secure_" + ZEROIDENTIFY_VERSION + ".html" + "?entersecret?" + "nextencodedurl=" + encoded_top_url
+    }
+
     const receiveMessage = async (event) => {
         event.preventDefault()
         event.stopPropagation()
@@ -98,6 +104,8 @@ export const Identify = () => {
         } else if ( event.data.indexOf("callback_func=") !== -1 ){
             let msg_call_func = await handle_param(event.data)
             window.top!.postMessage(msg_call_func, "*");
+        } else if ( event.data.indexOf("encoded_top_url=") !== -1 ){
+            handle_jump( event.data )
         } else {
             return
         }
