@@ -2,12 +2,11 @@ const path = require('path');
 const fs   = require('fs');
 
 module.exports = {
-    mode  : 'development',
-    devtool: 'inline-source-map',
-    entry : './src/identify.ts',
+    mode  : 'production',
+    entry : './src/IdentifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verify_v0.7.js',
+        filename: 'identify_core_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
@@ -19,7 +18,7 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: { presets: ['@babel/preset-env'] },
+                        options: { presets: ['@babel/preset-env', '@babel/react'] },
                     },
                     {
                         loader: 'ts-loader',
@@ -60,7 +59,7 @@ module.exports = {
             //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        port: 8080,
+        port: 8090,
     },
     resolve: {
         symlinks: false,

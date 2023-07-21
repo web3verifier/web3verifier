@@ -3,10 +3,10 @@ const fs   = require('fs');
 
 module.exports = {
     mode  : 'production',
-    entry : './src/IdentifyCore.tsx',
+    entry : './src/identify.ts',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'verify_core_v0.7.js',
+        filename: 'identify_v0.7.js',
     },
     watchOptions: {
         followSymlinks: true,
@@ -18,7 +18,7 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: { presets: ['@babel/preset-env', '@babel/react'] },
+                        options: { presets: ['@babel/preset-env'] },
                     },
                     {
                         loader: 'ts-loader',
@@ -59,7 +59,7 @@ module.exports = {
             //"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             //"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        port: 8090,
+        port: 8080,
     },
     resolve: {
         symlinks: false,
