@@ -119,11 +119,11 @@ private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
             throw Error( "hash length error" )
         }
         const encoder = new TextEncoder()
-        let solt0: Uint8Array = this.cryptolib.hash(encoder.encode(window.location.hostname))
-        let solt1: Uint8Array = this.cryptolib.hash(this.numToUint8Array(n))
+        let salt0: Uint8Array = this.cryptolib.hash(encoder.encode(window.location.hostname))
+        let salt1: Uint8Array = this.cryptolib.hash(this.numToUint8Array(n))
         let seed0: Uint8Array = base58.decode(rootSecretkey)
-        let seed1: Uint8Array = this.cryptolib.hash(this.cat(seed0,solt0))
-        let seed:  Uint8Array = this.cryptolib.hash(this.cat(seed1,solt1))
+        let seed1: Uint8Array = this.cryptolib.hash(this.cat(seed0,salt0))
+        let seed:  Uint8Array = this.cryptolib.hash(this.cat(seed1,salt1))
 
 
         this.tmpSecretkey = this.cryptolib.createSecretkeyFromSeed(seed.slice(0,32))
