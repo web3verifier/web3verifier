@@ -15,8 +15,8 @@ export class Account {
     constructor(localStorageName: string, cryptolib: CryptoLib) {
         this.cryptolib = cryptolib
         this.tmpSecretkey = "NotSetYet"
-        this.localStorageSecretName = localStorageName + "secretkey"
-        this.localStoragePublicName = localStorageName + "publickey"
+        this.localStorageSecretName = localStorageName + "_secretkey"
+        this.localStoragePublicName = localStorageName + "_publickey"
     }
     private setSecret(secretkey: string): [boolean, string] {
         if ( window.localStorage.getItem(this.localStorageSecretName) !== null ) {
