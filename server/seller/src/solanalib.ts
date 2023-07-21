@@ -10,6 +10,11 @@ export type NETWORK_TYPE = "PUBLIC" | "TESTNET"
 export const network: NETWORK_TYPE = "PUBLIC"
 
 export class SolanaLib extends CryptoLib {
+    public createSecretkeyFromSeed(seed:Uint8Array): string{
+        let keypair = Keypair.fromSeed(seed)
+        let base58secret = base58.encode(keypair.secretKey)
+        return base58secret
+    }
     public createSecretkey(): string {
         let keypair = Keypair.generate()
         let base58secret = base58.encode(keypair.secretKey)
@@ -30,10 +35,7 @@ export class SolanaLib extends CryptoLib {
         let sig: Uint8Array = base58.decode(signature)
         return ed.verify(sig, message, base58.decode(publickey))
     }
-    public hash(str: string): string {
-        return sha512( str ).toString()
-    }
-    public hashFromTicketInfo(dstPublickey: string, priceInt: string, srcPublickey: string): string {
-        return this.hash(dstPublickey + priceInt + srcPublickey)
+    public hash(array:Uint8Array): Uint8Array {
+        return sha512( array )
     }
 }

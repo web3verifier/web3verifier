@@ -47,14 +47,16 @@ export const Verify = () => {
     const [isGenerateChildOKMsg ,    setGenerateChildOKMsg] = useState( false )
     const [ButtonCaption,            setButtonCaption]      = useState("will be verified")
     const [VerifyType,               setVerifyType]         = useState("not set verify type")
+    const [ServerPublickey,          setServerPublickey]    = useState("not Init Publickey")
 
     const createRootAccount = () => {
         hideFirstButtons()
-        rootAccount.generateSecretkey(1, setPublickey, setGenerateRootOKMsg, true )
+        rootAccount.generateSecretkey(1, setPublickey, setGenerateRootOKMsg )
     }
     const createChildAccount = () => {
         hideCalcChildBtn()
-        childAccount.generateSecretkey(1, setPublickey, setChildMsg, false)
+
+        childAccount.calculateSecretkey(rootAccount.getSrcPrivatekey(), 1, ServerPublickey[0]+ServerPublickey[1], setPublickey, setChildMsg)
     }
     const haveRootAccount = () => {
         window.top!.postMessage("request topurl@", "*");
@@ -75,6 +77,7 @@ export const Verify = () => {
     const handle_param = async ( client_rtn: string ) => {
         let reqs = split( client_rtn, "&", ["callback_func", "server_publickey", "domain", "nonce" ] )
         let [message, signature] = await rootAccount.sign( reqs["server_publickey"], reqs["domain"], reqs["nonce"] )
+        setServerPublickey( reqs["server_publickey"] )
         let msg = "web3verifier_callbackfunc@"
         msg += "client_id="            + rootAccount.getSrcPublickey() 
         msg += "&message="             + message

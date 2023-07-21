@@ -1,3 +1,4 @@
+import base58 from 'bs58';
 import { CryptoLib } from './cryptolib';
 import { error } from './error';
 import { sign, getContent } from './verify_sign'
@@ -46,6 +47,8 @@ export class Account {
         document.body.removeChild(link);
     }
 
+
+
     private FixChar: string = "Z"
     private async tryToCreateSecretkey(VCount:number): Promise<[boolean,string]> {
         this.tmpSecretkey = this.cryptolib.createSecretkey()
@@ -69,7 +72,77 @@ export class Account {
         }
 
     }
-    public async generateSecretkey(Vcount:number, setPrintPublickey: (arg0: string) => void, showMsg: (arg0: boolean) => void, isDownload: boolean) {
+
+    /*
+private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
+    let c = new Uint8Array(65)
+    c[a.length] = b[0]
+    return c;
+}
+*/
+    private numToUint8Array(num): Uint8Array {
+        let arr = new Uint8Array(8);
+
+        for (let i = 0; i < 8; i++) {
+            arr[i] = num % 256;
+            num = Math.floor(num / 256);
+        }
+
+        return arr;
+    }
+    private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
+        for ( let i=0; i < a.length; i++ ){
+            a[i] += b[i]
+        }
+        return a
+    }
+
+    private async tryToCalculateSecretkey(rootSecretkey:string, n:number, firstPublicChars:string): Promise<[boolean,string]> {
+        if ( base58.decode(rootSecretkey).length != 64 ){
+            throw Error( "hash length error" )
+        }
+
+        let solt: Uint8Array = this.cryptolib.hash(this.numToUint8Array(n))
+        let seed: Uint8Array = this.cryptolib.hash(this.cat(base58.decode(rootSecretkey),solt))
+
+
+        this.tmpSecretkey = this.cryptolib.createSecretkeyFromSeed(seed.slice(0,32))
+        let publickey:string = this.cryptolib.getPublickeyFromSecret(this.tmpSecretkey)
+
+        console.log("n=" + n + " base58 seed=" + base58.encode(seed))
+        console.log("publicekey=" + publickey + " expectChars=" + firstPublicChars)
+
+        if ( publickey.indexOf( firstPublicChars ) === 0 ){
+            return [true, publickey];
+        } else {
+            return [false, publickey];
+        }
+    }
+
+    public async calculateSecretkey(rootSecretkey:string, n:number, firstPublicChars: string, setPrintPublickey: (arg0: string) => void, showMsg: (arg0: boolean) => void ) {
+        let rtn: [boolean, string] = [false,""]
+        for ( let i =0 ; i < 128 ; i++ ){
+            rtn = await this.tryToCalculateSecretkey(rootSecretkey, n, firstPublicChars)
+            n ++
+            if ( rtn[0] == true ) break
+        }
+        let result    = rtn[0]
+        setPrintPublickey( rtn[1] )
+
+        if ( result == false ){
+            setTimeout( ()=> {
+                this.calculateSecretkey(rootSecretkey, n, firstPublicChars, setPrintPublickey, showMsg )
+            }, 0)
+        } else {
+            showMsg(true)
+            this.setSecret( this.tmpSecretkey )
+            setTimeout( () => {
+                showMsg(false)
+            }, 5000)
+        }
+
+    }
+    public async generateSecretkey(Vcount:number, setPrintPublickey: (arg0: string) => void, showMsg: (arg0: boolean) => void) {
         let rtn: [boolean, string] = [false,""]
         for ( let i =0 ; i < 128 ; i++ ){
             rtn = await this.tryToCreateSecretkey(Vcount)
@@ -80,14 +153,12 @@ export class Account {
 
         if ( result == false ){
             setTimeout( ()=> {
-                this.generateSecretkey(Vcount, setPrintPublickey, showMsg, isDownload)
+                this.generateSecretkey(Vcount, setPrintPublickey, showMsg )
             }, 0)
         } else {
             showMsg(true)
             this.setSecret( this.tmpSecretkey )
-            if ( isDownload === true ){
-                this.download( this.tmpSecretkey )
-            }
+            this.download( this.tmpSecretkey )
             setTimeout( () => {
                 showMsg(false)
             }, 5000)
