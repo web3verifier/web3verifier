@@ -11,10 +11,10 @@ export class AccountSecurity {
         this.cryptolib = cryptolib
     }
     private setPublickey(publickey: string): void {
-        window.localStorage.setItem("publickey", publickey)
+        window.localStorage.setItem("root_publickey", publickey)
     }
     public setSecret(secretkey: string): [boolean, string] {
-        if ( window.localStorage.getItem("secretkey") !== null ) {
+        if ( window.localStorage.getItem("root_secretkey") !== null ) {
             const e = new Error("localstorage.getItem(secretkey) must be null")
             error( e )
             throw e
@@ -29,11 +29,11 @@ export class AccountSecurity {
         } catch(e) {
             return [false, e.message]
         }
-        window.localStorage.setItem("secretkey", secretkey)
+        window.localStorage.setItem("root_secretkey", secretkey)
         return [true, ""]
     }
     public getSecret(): string | GUEST_SECRET {
-        const secretkey: string | null = window.localStorage.getItem("secretkey")
+        const secretkey: string | null = window.localStorage.getItem("root_secretkey")
         if (secretkey !== null) {
             return secretkey
         } else {
