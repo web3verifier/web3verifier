@@ -91,39 +91,55 @@ private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
         return arr;
     }
     private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
-        let c: Uint8Array
+        let c = new Uint8Array(64)
         for ( let i=0; i < a.length; i++ ){
             c[i] = a[i] + b[i]
         }
         return c
     }
+    private escapeBase58Unused( url: string ): string{
+        // Base58:  123456789ABCDEFGHJKLMN PQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
+        // URL   : 0123456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz-_.!'()*
+        let base58String:string = url
+        base58String = base58String.replace( "0", "x" )
+        base58String = base58String.replace( "O", "x" )
+        base58String = base58String.replace( "-", "x" )
+        base58String = base58String.replace( "_", "x" )
+        base58String = base58String.replace( ".", "x" )
+        base58String = base58String.replace( "!", "x" )
+        base58String = base58String.replace( "'", "x" )
+        base58String = base58String.replace( "(", "x" )
+        base58String = base58String.replace( ")", "x" )
+        base58String = base58String.replace( "*", "x" )
+        return base58String
+    }
 
-    private async tryToCalculateSecretkey(rootSecretkey:string, n:number, firstPublicChars:string): Promise<[boolean,string]> {
+    private async tryToCalculateSecretkey(rootSecretkey:string, n:number, firstSubDomainChars:string): Promise<[boolean,string]> {
         if ( base58.decode(rootSecretkey).length != 64 ){
             throw Error( "hash length error" )
         }
-
-        let solt: Uint8Array = this.cryptolib.hash(this.numToUint8Array(n))
-        let seed: Uint8Array = this.cryptolib.hash(this.cat(base58.decode(rootSecretkey),solt))
+        let solt1: Uint8Array = this.cryptolib.hash(this.numToUint8Array(n))
+        let seed: Uint8Array = this.cryptolib.hash(this.cat(base58.decode(rootSecretkey),solt1))
 
 
         this.tmpSecretkey = this.cryptolib.createSecretkeyFromSeed(seed.slice(0,32))
         let publickey:string = this.cryptolib.getPublickeyFromSecret(this.tmpSecretkey)
 
         console.log("n=" + n + " base58 seed=" + base58.encode(seed))
-        console.log("publicekey=" + publickey + " expectChars=" + firstPublicChars)
+        console.log("publicekey =" + publickey)
+        console.log("expectChars=" + firstSubDomainChars)
 
-        if ( publickey.indexOf( firstPublicChars ) === 0 ){
+        if ( publickey.indexOf( this.escapeBase58Unused(firstSubDomainChars) ) === 0 ){
             return [true, publickey];
         } else {
             return [false, publickey];
         }
     }
 
-    public async calculateSecretkey(rootSecretkey:string, n:number, firstPublicChars: string, setPrintPublickey: (arg0: string) => void, showMsg: (arg0: boolean) => void ) {
+    public async calculateSecretkey(rootSecretkey:string, n:number, firstSubDomainChars: string, setPrintPublickey: (arg0: string) => void, showMsg: (arg0: boolean) => void ) {
         let rtn: [boolean, string] = [false,""]
         for ( let i =0 ; i < 128 ; i++ ){
-            rtn = await this.tryToCalculateSecretkey(rootSecretkey, n, firstPublicChars)
+            rtn = await this.tryToCalculateSecretkey(rootSecretkey, n, firstSubDomainChars)
             n ++
             if ( rtn[0] == true ) break
         }
@@ -132,7 +148,7 @@ private cat(a: Uint8Array, b: Uint8Array): Uint8Array {
 
         if ( result == false ){
             setTimeout( ()=> {
-                this.calculateSecretkey(rootSecretkey, n, firstPublicChars, setPrintPublickey, showMsg )
+                this.calculateSecretkey(rootSecretkey, n, firstSubDomainChars, setPrintPublickey, showMsg )
             }, 0)
         } else {
             showMsg(true)

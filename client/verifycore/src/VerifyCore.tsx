@@ -56,7 +56,8 @@ export const Verify = () => {
     const createChildAccount = () => {
         hideCalcChildBtn()
 
-        childAccount.calculateSecretkey(rootAccount.getSrcPrivatekey(), 1, ServerPublickey[0]+ServerPublickey[1], setPublickey, setChildMsg)
+        const hostname = window.location.hostname
+        childAccount.calculateSecretkey(rootAccount.getSrcPrivatekey(), 1, hostname[0]+hostname[1], setPublickey, setChildMsg) // no two start words
     }
     const haveRootAccount = () => {
         window.top!.postMessage("request topurl@", "*");
@@ -173,12 +174,13 @@ export const Verify = () => {
                         </div>
                     );
                 } else {
+                    let firstChars = window.location.hostname[0] + window.location.hostname[1]
                     return(
                         <div className="Window Window_Verify">
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                             </div>
-                            <Message className="Verify_Message1"  text="The secret key is calculating, the public key of which begins with the letter ZZ." visible={true}/>
+                            <Message className="Verify_Message1"  text={"The secret key is calculating, the public key of which begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
                             <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
                         </div>
                     );
