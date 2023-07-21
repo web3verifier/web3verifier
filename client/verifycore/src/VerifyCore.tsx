@@ -51,7 +51,7 @@ export const Verify = () => {
 
     const createRootAccount = () => {
         hideFirstButtons()
-        rootAccount.generateSecretkey(1, setPublickey, setGenerateRootOKMsg )
+        rootAccount.generateSecretkey(1, setPublickey, setRootMsg)
     }
     const createChildAccount = () => {
         hideCalcChildBtn()
@@ -115,6 +115,10 @@ export const Verify = () => {
             window.top!.postMessage("web3verifier_getparam@" , "*");
         }
     }
+    const setRootMsg = (show:boolean) => {
+        setGenerateRootOKMsg(show)
+        showAmountLabel()
+    }
     const setChildMsg = (show:boolean) => {
         setGenerateChildOKMsg(show)
         prepare()
@@ -168,6 +172,7 @@ export const Verify = () => {
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
+                            <Message className="Verify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
                             <div className="Window_RowDirection Window_RowDirection_Verify">
                                 <CallbackButton caption={"Calculate Child Secretkey to Sign-in"}          visible={true}  onclick={createChildAccount} />
                             </div>
@@ -178,7 +183,7 @@ export const Verify = () => {
                     return(
                         <div className="Window Window_Verify">
                             <div className="Window_FirstLine Window_FirstLine_Verify">
-                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
                             <Message className="Verify_Message1"  text={"The secret key is calculating, the public key of which begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
                             <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
@@ -190,7 +195,7 @@ export const Verify = () => {
                     return(
                         <div className="Window Window_Verify">
                             <div className="Window_FirstLine Window_FirstLine_Verify">
-                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
                             <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
                             <Message className="Verify_Publickey" text={PrintPublickey}                               visible={true}/>
@@ -203,6 +208,7 @@ export const Verify = () => {
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
+                            <Message className="Verify_Publickey" text={childAccount.getSrcPublickey()} visible={true}/>
                             <div className="Window_RowDirection Window_RowDirection_Verify">
                                 <CallbackButton caption={ButtonCaption}          visible={true}  onclick={web3Verify}  />
                             </div>
