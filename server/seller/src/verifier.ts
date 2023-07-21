@@ -24,15 +24,4 @@ export class Verifier {
     public async verify( clientpublickey:string, content:string, signature:string ): Promise<boolean> {
         return verify(clientpublickey, content, signature)
     }
-
-/*
-        let serverpublickey          = ""
-        let domain                   = ""
-        let nonce                    = ""
-        if ( this_domain !== domain ){
-            console.log( this_domain + "!==" + domain )
-            throw Error("verify error") 
-        }
-*/
-
 }

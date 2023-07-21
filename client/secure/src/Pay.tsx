@@ -40,7 +40,7 @@ export const Pay = () => {
     }
     return (
         <div className="Global_BasicColumnFlex">
-            <div>Pay for web3verify</div>
+            <div>Pay for zeroIDentify</div>
             <div>{args["uiAmount"]} USDC</div>
             <div>Destination: {args["address"]}</div>
             <CallbackButton caption="Pay for web3veirfy" visible={true} disabled={isDisableButton}  onclick={pay}/>

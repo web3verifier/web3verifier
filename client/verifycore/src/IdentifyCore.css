@@ -16,27 +16,27 @@ body {
 }
 
 
-.Window_Verify {
+.Window_Identify {
     width:285px;
     height:85px;
 }
-.Window_FirstLine_Verify {
+.Window_FirstLine_Identify {
     width:275px;
     height:18px;
 }
-.Window_RowDirection_Verify {
+.Window_RowDirection_Identify {
     height: 63px;
 }
 
 
-.Verify_Message1{
+.Identify_Message1{
     font-size: 13px;
     margin-top: 9px;
 }
-.Verify_Publickey{
+.Identify_Publickey{
     font-size: 10px;
     color: blue;
 }
-.Verify_Message2{
+.Identify_Message2{
     font-size: 13px;
 }

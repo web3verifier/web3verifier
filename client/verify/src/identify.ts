@@ -24,29 +24,38 @@ function postMessage(iframe:HTMLIFrameElement, msg: string){
 
 let iframe = document.createElement('iframe')
 iframe.src = SECURITY_SERVER + '/verify_core_v0.7.html'
-let web3verifier:HTMLElement | null = document.getElementById('web3verifier')
-web3verifier!.appendChild(iframe)
+let zeroidentify:HTMLElement | null = document.getElementById('zeroIDentify')
+zeroidentify!.appendChild(iframe)
 
 window.addEventListener('message', (event) => {
     if (event.origin !== SECURITY_SERVER ){
         return;
     }
-    if ( event.data === 'web3verifier_getverifytype@'){
-        let el = document.getElementById("web3verifier")
-        let type     = el!.getAttribute("verify_type")
-        postMessage(iframe, 'verify_type=' + type );
-    } else if ( event.data === 'web3verifier_getparam@') {
-        let el = document.getElementById("web3verifier")
+    if ( event.data === 'zeroidentify_getidentifytype@'){
+        let el = document.getElementById("zeroIDentify")
+        let type     = el!.getAttribute("identify_type")
+        postMessage(iframe, 'identify_type=' + type );
+    } else if ( event.data === 'zeroidentify_getparam@') {
+        let el = document.getElementById("zeroIDentify")
         let buttonclickfunc = el!.getAttribute("button_click_func")
         let getnoncefunc    = el!.getAttribute("get_nonce_func")
         let serverpublickey = el!.getAttribute("server_publickey")
         let domain          = document.location.hostname
+        if ( buttonclickfunc === null ){
+            throw Error( "There is no setting. button_click_func = XXXXX" )
+        }
+        if ( getnoncefunc === null ){
+            throw Error( "There is no setting. get_nonce_func = XXXXX" )
+        }
+        if ( serverpublickey === null ){
+            throw Error( "There is no setting. server_publickey = XXXXX" )
+        }
         eval(getnoncefunc)( (nonce) => {
             let msg = "callback_func=" + buttonclickfunc + "&server_publickey=" + serverpublickey + "&domain=" + domain + "&nonce=" + nonce 
             postMessage(iframe, msg) 
         })
-    } else if ( event.data.indexOf("web3verifier_callbackfunc@") !== -1 ){
-        const length = "web3verifier_callbackfunc=".length
+    } else if ( event.data.indexOf("zeroidentify_callbackfunc@") !== -1 ){
+        const length = "zeroidentify_callbackfunc=".length
         const reqs_string:string = event.data.substring(length, event.data.length)
         let reqs = split( reqs_string, "&", ["client_id", "message", "signature_by_client", "callback_func"] )
         let funcname = reqs["callback_func"]

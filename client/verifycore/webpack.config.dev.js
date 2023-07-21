@@ -4,7 +4,7 @@ const fs   = require('fs');
 module.exports = {
     mode  : 'development',
     devtool: 'inline-source-map',
-    entry : './src/VerifyCore.tsx',
+    entry : './src/IdentifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
         filename: 'verify_core_v0.7.js',

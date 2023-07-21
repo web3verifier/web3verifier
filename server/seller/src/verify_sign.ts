@@ -3,7 +3,7 @@ import { CryptoLib } from './cryptolib';
 
 import { split } from './util'
 
-let path: string                  = "/web3verifier_verify"
+let path: string                  = "/zeroidentify_identify"
 let delemeter                     = ":"
 export const server_publickey_key: string  = "serverpublickey"
 export const domain_key: string            = "domain"

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Global.css'
-import './VerifyCore.css'
+import './IdentifyCore.css'
 import { createRoot } from 'react-dom/client';
 import { Account } from './account'
 import { SolanaLib } from './solanalib';
@@ -14,9 +14,9 @@ import { useEffect } from 'react';
 import { split } from './util';
 import { SOLANA_BLOCKCHAIN_SERVER } from './url';
 import { SECURITY_SERVER } from './url';
-import { WEB3VERIFY_VERSION } from './version';
+import { ZEROIDENTIFY_VERSION } from './version';
 
-export const Verify = () => {
+export const Identify = () => {
 
     const rootAccount  = new Account("root", new SolanaLib() )
     const childAccount = new Account("child_"+window.location.hostname, new SolanaLib() )
@@ -46,7 +46,7 @@ export const Verify = () => {
     const [isGenerateRootOKMsg ,     setGenerateRootOKMsg]  = useState( false )
     const [isGenerateChildOKMsg ,    setGenerateChildOKMsg] = useState( false )
     const [ButtonCaption,            setButtonCaption]      = useState("will be verified")
-    const [VerifyType,               setVerifyType]         = useState("not set verify type")
+    const [IdentifyType,             setIdentifyType]         = useState("not set Identifytype")
     const [ServerPublickey,          setServerPublickey]    = useState("not Init Publickey")
 
     const createRootAccount = () => {
@@ -63,23 +63,23 @@ export const Verify = () => {
         window.top!.postMessage("request topurl@", "*");
     }
 
-    const setType = ( type:string ) => {
-        if ( type === "log_in" ){
+    const setType = ( Identifytype:string ) => {
+        if ( Identifytype === "log_in" ){
             setButtonCaption("Log In")
-            setVerifyType(type)
+            setIdentifyType(Identifytype)
         }
     }
 
-    const handle_verifytype = async ( client_rtn: string ) => {
-        let reqs = split( client_rtn, "&", ["verify_type"] )
-        setType(reqs["verify_type"])
+    const handle_identifytype = async ( client_rtn: string ) => {
+        let reqs = split( client_rtn, "&", ["identify_type"] )
+        setType(reqs["identify_type"])
     }
 
     const handle_param = async ( client_rtn: string ) => {
         let reqs = split( client_rtn, "&", ["callback_func", "server_publickey", "domain", "nonce" ] )
         let [message, signature] = await rootAccount.sign( reqs["server_publickey"], reqs["domain"], reqs["nonce"] )
         setServerPublickey( reqs["server_publickey"] )
-        let msg = "web3verifier_callbackfunc@"
+        let msg = "zeroidentify_callbackfunc@"
         msg += "client_id="            + rootAccount.getSrcPublickey() 
         msg += "&message="             + message
         msg += "&signature_by_client=" + signature
@@ -93,8 +93,8 @@ export const Verify = () => {
         if ( typeof event.data !== "string" ){
             return
         }
-        if ( event.data.indexOf("verify_type=") !== -1 ){
-            handle_verifytype(event.data)
+        if ( event.data.indexOf("identify_type=") !== -1 ){
+            handle_identifytype(event.data)
         } else if ( event.data.indexOf("callback_func=") !== -1 ){
             let msg_call_func = await handle_param(event.data)
             window.top!.postMessage(msg_call_func, "*");
@@ -110,9 +110,9 @@ export const Verify = () => {
         }
     }, [])
 
-    const web3Verify = async () => {
-        if ( VerifyType === "log_in" ){
-            window.top!.postMessage("web3verifier_getparam@" , "*");
+    const zeroIdentify = async () => {
+        if ( IdentifyType === "log_in" ){
+            window.top!.postMessage("zeroidentify_getparam@" , "*");
         }
     }
     const setRootMsg = (show:boolean) => {
@@ -124,18 +124,18 @@ export const Verify = () => {
         prepare()
     }
     const prepare = () => {
-        window.top!.postMessage("web3verifier_getverifytype@", "*");
+        window.top!.postMessage("zeroidentify_getidentifytype@", "*");
         showAmountLabel()
     }
 
     if ( rootAccount.getSrcPublickey() === "GUEST_ACCOUNT" ) {
         if ( isFirstButtonsVisible === true ){
             return(
-                <div className="Window Window_Verify">
-                    <div className="Window_FirstLine Window_FirstLine_Verify">
-                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                <div className="Window Window_Identify">
+                    <div className="Window_FirstLine Window_FirstLine_Identify">
+                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <div className="Window_RowDirection Window_RowDirection_Verify">
+                    <div className="Window_RowDirection Window_RowDirection_Identify">
                         <CallbackButton caption="Generate New Root Secretkey" visible={true}  onclick={createRootAccount} disabled={false}/>
                         <CallbackButton caption="Already Have Root Secretkey" visible={true}  onclick={haveRootAccount}   disabled={false}/>
                     </div>
@@ -143,37 +143,37 @@ export const Verify = () => {
             );
         } else {
             return(
-                <div className="Window Window_Verify">
-                    <div className="Window_FirstLine Window_FirstLine_Verify">
-                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                <div className="Window Window_Identify">
+                    <div className="Window_FirstLine Window_FirstLine_Identify">
+                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="Verify_Message1"  text="The secret key is generating, the public key of which begins with the letter Z." visible={true}/>
-                    <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
+                    <Message className="Identify_Message1"  text="The secret key is generating, the public key of which begins with the letter Z." visible={true}/>
+                    <Message className="Identify_Publickey" text={PrintPublickey}                         visible={true}/>
                 </div>
             );
         }
     } else {
         if ( isGenerateRootOKMsg === true ){
             return(
-                <div className="Window Window_Verify">
-                    <div className="Window_FirstLine Window_FirstLine_Verify">
-                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                <div className="Window Window_Identify">
+                    <div className="Window_FirstLine Window_FirstLine_Identify">
+                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="Verify_Message1"  text="Found the secretkey!"                         visible={true}/>
-                    <Message className="Verify_Publickey" text={PrintPublickey}                               visible={true}/>
-                    <Message className="Verify_Message2"  text="  generate OK! downloading root secretkey."   visible={true}/>
+                    <Message className="Identify_Message1"  text="Found the secretkey!"                         visible={true}/>
+                    <Message className="Identify_Publickey" text={PrintPublickey}                               visible={true}/>
+                    <Message className="Identify_Message2"  text="  generate OK! downloading root secretkey."   visible={true}/>
                 </div>
             );
         } else {
             if ( childAccount.getSrcPublickey() === "GUEST_ACCOUNT" ) {
                 if ( isCalcChildKeyBtnVisible === true ){
                     return(
-                        <div className="Window Window_Verify">
-                            <div className="Window_FirstLine Window_FirstLine_Verify">
-                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                        <div className="Window Window_Identify">
+                            <div className="Window_FirstLine Window_FirstLine_Identify">
+                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <div className="Window_ColumnDirection Window_RowDirection_Verify">
-                                <Message className="Verify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
+                            <div className="Window_ColumnDirection Window_RowDirection_Identify">
+                                <Message className="Identify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
                                 <CallbackButton caption={"Calculate Child Secretkey to Sign-in"}          visible={true}  onclick={createChildAccount} />
                             </div>
                         </div>
@@ -181,37 +181,37 @@ export const Verify = () => {
                 } else {
                     let firstChars = window.location.hostname[0] + window.location.hostname[1]
                     return(
-                        <div className="Window Window_Verify">
-                            <div className="Window_FirstLine Window_FirstLine_Verify">
-                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                        <div className="Window Window_Identify">
+                            <div className="Window_FirstLine Window_FirstLine_Identify">
+                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Verify_Message1"  text={"The secret key is calculating."} visible={true}/>
-                            <Message className="Verify_Publickey" text={PrintPublickey}                         visible={true}/>
-                            <Message className="Verify_Message2"  text={"Finding public key begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
+                            <Message className="Identify_Message1"  text={"The secret key is calculating."} visible={true}/>
+                            <Message className="Identify_Publickey" text={PrintPublickey}                         visible={true}/>
+                            <Message className="Identify_Message2"  text={"Finding public key begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
                         </div>
                     );
                 }
             } else {
                 if ( isGenerateChildOKMsg === true ){
                     return(
-                        <div className="Window Window_Verify">
-                            <div className="Window_FirstLine Window_FirstLine_Verify">
-                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                        <div className="Window Window_Identify">
+                            <div className="Window_FirstLine Window_FirstLine_Identify">
+                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
-                            <Message className="Verify_Publickey" text={PrintPublickey}       visible={true}/>
-                            <Message className="Verify_Message2"  text="  calculate OK!"      visible={true}/>
+                            <Message className="Identify_Message1"  text="Found the secretkey!" visible={true}/>
+                            <Message className="Identify_Publickey" text={PrintPublickey}       visible={true}/>
+                            <Message className="Identify_Message2"  text="  calculate OK!"      visible={true}/>
                         </div>
                     );
                 } else {
                     return(
-                        <div className="Window Window_Verify">
-                            <div className="Window_FirstLine Window_FirstLine_Verify">
-                                <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                        <div className="Window Window_Identify">
+                            <div className="Window_FirstLine Window_FirstLine_Identify">
+                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <div className="Window_ColumnDirection Window_RowDirection_Verify">
-                                <Message className="Verify_Publickey" text={childAccount.getSrcPublickey()} visible={true}/>
-                                <CallbackButton caption={ButtonCaption}          visible={true}  onclick={web3Verify}  />
+                            <div className="Window_ColumnDirection Window_RowDirection_Identify">
+                                <Message className="Identify_Publickey" text={childAccount.getSrcPublickey()} visible={true}/>
+                                <CallbackButton caption={ButtonCaption}          visible={true}  onclick={zeroIdentify}  />
                             </div>
                         </div>
                     );
@@ -223,5 +223,5 @@ export const Verify = () => {
 const container = document.getElementById('root')
 const root = createRoot( container! )
 root.render(
-    <Verify /> 
+    <Identify /> 
 )

@@ -8,7 +8,7 @@ import { DeleteSecret } from './DeleteSecret';
 import { Pay } from './Pay'
 import { Account } from './account';
 import { SolanaLib } from './solanalib';
-import { WEB3VERIFY_VERSION } from './version';
+import { ZEROIDENTIFY_VERSION } from './version';
 
 
 export const Router = () => {
@@ -39,7 +39,7 @@ export const Router = () => {
             )
         } else if ( param === "?deletesecret" ){
             return (
-                <DeleteSecret returnBackURL = {"./secure_"+WEB3VERIFY_VERSION+".html"} />
+                <DeleteSecret returnBackURL = {"./secure_"+ZEROIDENTIFY_VERSION+".html"} />
             )
         } else if ( param.indexOf("?pay") !== -1 ){
             return (

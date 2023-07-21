@@ -1,1 +1,1 @@
-export const WEB3VERIFY_VERSION="v0.7"
+export const ZEROIDENTIFY_VERSION="v0.7"

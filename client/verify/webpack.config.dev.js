@@ -4,7 +4,7 @@ const fs   = require('fs');
 module.exports = {
     mode  : 'development',
     devtool: 'inline-source-map',
-    entry : './src/verify.ts',
+    entry : './src/identify.ts',
     output: {
         path: path.join(__dirname,'dist'),
         filename: 'verify_v0.7.js',
