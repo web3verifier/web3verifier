@@ -159,7 +159,7 @@ export const Verify = () => {
                     <div className="Window_FirstLine Window_FirstLine_Verify">
                         <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
+                    <Message className="Verify_Message1"  text="Found the secretkey!"                         visible={true}/>
                     <Message className="Verify_Publickey" text={PrintPublickey}                               visible={true}/>
                     <Message className="Verify_Message2"  text="  generate OK! downloading root secretkey."   visible={true}/>
                 </div>
@@ -172,8 +172,8 @@ export const Verify = () => {
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Verify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
-                            <div className="Window_RowDirection Window_RowDirection_Verify">
+                            <div className="Window_ColumnDirection Window_RowDirection_Verify">
+                                <Message className="Verify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
                                 <CallbackButton caption={"Calculate Child Secretkey to Sign-in"}          visible={true}  onclick={createChildAccount} />
                             </div>
                         </div>
@@ -198,8 +198,8 @@ export const Verify = () => {
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
                             <Message className="Verify_Message1"  text="Found the secretkey!" visible={true}/>
-                            <Message className="Verify_Publickey" text={PrintPublickey}                               visible={true}/>
-                            <Message className="Verify_Message2"  text="  calculate OK!" visible={true}/>
+                            <Message className="Verify_Publickey" text={PrintPublickey}       visible={true}/>
+                            <Message className="Verify_Message2"  text="  calculate OK!"      visible={true}/>
                         </div>
                     );
                 } else {
@@ -208,8 +208,8 @@ export const Verify = () => {
                             <div className="Window_FirstLine Window_FirstLine_Verify">
                                 <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Verify_Publickey" text={childAccount.getSrcPublickey()} visible={true}/>
-                            <div className="Window_RowDirection Window_RowDirection_Verify">
+                            <div className="Window_ColumnDirection Window_RowDirection_Verify">
+                                <Message className="Verify_Publickey" text={childAccount.getSrcPublickey()} visible={true}/>
                                 <CallbackButton caption={ButtonCaption}          visible={true}  onclick={web3Verify}  />
                             </div>
                         </div>
