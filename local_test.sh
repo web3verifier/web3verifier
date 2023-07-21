@@ -31,11 +31,11 @@ fi
 
 ps aux | grep webpack| grep -v grep | awk '{ print "kill -9", $2 }' | sh
 
-cd ./client/verify/
+cd ./client/identify/
     ./run.sh &
 cd ../../
 
-cd ./client/verifycore/
+cd ./client/identifycore/
     ./run.sh &
 cd ../../
 

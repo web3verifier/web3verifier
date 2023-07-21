@@ -1,1 +1,1 @@
-../../verifycore/src/version.ts
+../../identifycore/src/version.ts

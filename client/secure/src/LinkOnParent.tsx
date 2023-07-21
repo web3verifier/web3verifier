@@ -1,1 +1,1 @@
-../../verifycore/src/LinkOnParent.tsx
+../../identifycore/src/LinkOnParent.tsx

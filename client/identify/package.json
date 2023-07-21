@@ -1,5 +1,5 @@
 {
-  "name": "verify",
+  "name": "identify",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.dev.js",

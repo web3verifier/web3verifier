@@ -1,1 +1,1 @@
-../../verifycore/src/AmountLabel.tsx
+../../identifycore/src/AmountLabel.tsx
