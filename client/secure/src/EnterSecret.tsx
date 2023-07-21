@@ -57,10 +57,10 @@ export const EnterSecret = () =>{
             <div className="AllCenter">
                 <div className="Window Window_EnterSecret">
                     <div className="Window_FirstLine Window_FirstLine_EnterSecret">
-                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
                     <div className="Window_ColumnDirection Window_ColumnDirection_EnterSecret">
-                        <Message className="EnterSecret_Message"  text="Enter a secret key whose public key begins with VV." visible={true}/>
+                        <Message className="EnterSecret_Message"  text="Enter a secret key whose public key begins with Z." visible={true}/>
                         <div>
                             <TextBox visible={!isOKButtonVisible} value={secretkey} onchange={onchange} className="SecretText" size={88} maxLength={88} />
                             &nbsp;&nbsp;
@@ -76,7 +76,7 @@ export const EnterSecret = () =>{
             <div className="AllCenter">
                 <div className="Window Window_EnterSecret">
                     <div className="Window_FirstLine Window_FirstLine_EnterSecret">
-                        <LinkOnParent className="Window_MainSite" name='Web3Verifier' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
                     <div className="Window_ColumnDirection Window_ColumnDirection_EnterSecret">
                         <div>
