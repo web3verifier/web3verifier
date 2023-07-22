@@ -23,7 +23,7 @@ function postMessage(iframe:HTMLIFrameElement, msg: string){
 }
 
 let iframe = document.createElement('iframe')
-iframe.src = SECURITY_SERVER + '/verify_core_v0.7.html'
+iframe.src = SECURITY_SERVER + '/identify_core_v0.7.html'
 let zeroidentify:HTMLElement | null = document.getElementById('zeroIDentify')
 zeroidentify!.appendChild(iframe)
 

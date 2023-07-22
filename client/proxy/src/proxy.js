@@ -62,7 +62,7 @@ let server = https.createServer(options, function (request, response) {
                 console.log(error);
             });
         }
-        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("verify_core")) != -1) {
+        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("identify_core")) != -1) {
             axios_1.default.get('http://localhost:8090' + pathname)
                 .then((results) => {
                 //console.log(results.status)
@@ -71,11 +71,15 @@ let server = https.createServer(options, function (request, response) {
                 response.end(results.data);
             })
                 .catch((error) => {
-                console.log("verify_core communication error");
+                console.log("identify_core communication error");
                 console.log(error);
             });
         }
-        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("verify")) != -1) {
+        else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("identify")) != -1) {
+            console.log("*********************");
+            console.log("in Proxy");
+            console.log("identify");
+            console.log("*********************");
             axios_1.default.get('http://localhost:8080' + pathname)
                 .then((results) => {
                 //console.log(results.status)
@@ -84,7 +88,7 @@ let server = https.createServer(options, function (request, response) {
                 response.end(results.data);
             })
                 .catch((error) => {
-                console.log("verify communication error");
+                console.log("identify communication error");
                 console.log(error);
             });
         }

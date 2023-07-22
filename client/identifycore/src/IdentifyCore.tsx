@@ -182,7 +182,7 @@ export const Identify = () => {
                             </div>
                             <div className="Window_ColumnDirection Window_RowDirection_Identify">
                                 <Message className="Identify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
-                                <CallbackButton caption={"Calculate Child Secretkey to Sign-in"}          visible={true}  onclick={createChildAccount} />
+                                <CallbackButton caption={"Calculate Child Secretkey to Sign up"}          visible={true}  onclick={createChildAccount} />
                             </div>
                         </div>
                     );
