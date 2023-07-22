@@ -28,7 +28,7 @@ sed -i "s/zeroidentify.com/$address:4433/g" ./server/seller/src/url.ts
 
 if [ $landing = "landing" ]; then
     sed -i "s/zeroidentify.com/$address:4433/g" ./server/landing/src/public/index.html
-    sed -i "s/zeroidentify.com/$address:4433/g" ./server/landing/src/create_session.ts
+    sed -i "s/zeroidentify.com/$address/g" ./server/landing/src/create_session.ts
 fi
 
 ps aux | grep webpack| grep -v grep | awk '{ print "kill -9", $2 }' | sh

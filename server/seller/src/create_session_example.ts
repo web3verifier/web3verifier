@@ -7,7 +7,7 @@ import https from 'https';
 import fs from 'fs';
 import path from 'path';
 
-const this_domain = "192.168.15.6"
+const this_domain = "your_domain"
 
 let port = 443
 if ( process.argv.length == 3 ) {
