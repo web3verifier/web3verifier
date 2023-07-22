@@ -76,10 +76,6 @@ let server = https.createServer(options, function (request, response) {
             });
         }
         else if ((pathname === null || pathname === void 0 ? void 0 : pathname.indexOf("identify")) != -1) {
-            console.log("*********************");
-            console.log("in Proxy");
-            console.log("identify");
-            console.log("*********************");
             axios_1.default.get('http://localhost:8080' + pathname)
                 .then((results) => {
                 //console.log(results.status)

@@ -21,6 +21,8 @@ fi
 echo $landing
 
 git checkout ./server/seller/src/url.ts
+git checkout ./server/landing/src/public/index.html
+git checkout ./server/landing/src/create_session.ts
 
 sed -i "s/zeroidentify.com/$address:4433/g" ./server/seller/src/url.ts
 
