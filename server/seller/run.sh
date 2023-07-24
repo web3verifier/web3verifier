@@ -20,7 +20,7 @@ while true; do
         set +e
         ps aux | grep "node ./create_session_example.js" | grep -v grep | awk '{ print "sudo kill -9", $2 }' | sh
         set -e
-        sudo .././node_modules/.bin/node ./create_session_example.js $Port &
+        sudo .././node_modules/.bin/node ./create_session.js $Port &
         inotifywait -e modify ./*.ts
     cd ..
 
