@@ -7,7 +7,7 @@ module.exports = {
     entry : './src/Main.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'secure_v0.7.js',
+        filename: 'secure_v0.8.js',
     },
     watchOptions: {
         followSymlinks: true,

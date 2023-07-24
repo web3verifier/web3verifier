@@ -7,7 +7,7 @@ module.exports = {
     entry : './src/IdentifyCore.tsx',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'identify_core_v0.7.js',
+        filename: 'identify_core_v0.8.js',
     },
     watchOptions: {
         followSymlinks: true,

@@ -7,7 +7,7 @@ module.exports = {
     entry : './src/identify.ts',
     output: {
         path: path.join(__dirname,'dist'),
-        filename: 'identify_v0.7.js',
+        filename: 'identify_v0.8.js',
     },
     watchOptions: {
         followSymlinks: true,
