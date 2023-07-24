@@ -54,6 +54,8 @@ function requireLogin(req: any, res: Response, next: NextFunction){
 
 app.post('/create_session', async (req: any, res: Response) => {
     console.log( "in /create_session" )
+    console.log( "req.headers=" )
+    console.log( JSON.stringify(req.headers,null,2) );
     console.log( "req.body=" )
     console.log( req.body )
     try {
@@ -100,6 +102,11 @@ app.get('/seller.html', requireLogin, (req, res) => {
     const filename = "/seller.html"
     const filePath = path.join(__dirname+"/public", filename );
     console.log( filePath )
+
+    console.log( "req.headers=" )
+    console.log( JSON.stringify(req.headers,null,2) );
+    console.log( "req.body=" )
+    console.log( req.body )
 
     // Set the appropriate content type and headers
     res.setHeader('Content-Type', 'text/html');
