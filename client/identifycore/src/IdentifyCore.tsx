@@ -195,7 +195,7 @@ export const Identify = () => {
                             </div>
                             <Message className="Identify_Message1"  text={"The secret key is calculating."} visible={true}/>
                             <Message className="Identify_Publickey" text={PrintPublickey}                         visible={true}/>
-                            <Message className="Identify_Message2"  text={"Finding public key begins with the letter "+firstChars+". this is current domain first two chars."} visible={true}/>
+                            <Message className="Identify_Message2"  text={"Finding public key begins with the letter \""+firstChars+"\". this is current domain first two chars."} visible={true}/>
                         </div>
                     );
                 }
