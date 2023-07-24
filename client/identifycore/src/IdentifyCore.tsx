@@ -141,7 +141,7 @@ export const Identify = () => {
             return(
                 <div className="Window Window_Identify">
                     <div className="Window_FirstLine Window_FirstLine_Identify">
-                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                        <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
                     <div className="Window_RowDirection Window_RowDirection_Identify">
                         <CallbackButton caption="Generate New Root Secretkey" visible={true}  onclick={createRootAccount} disabled={false}/>
@@ -153,9 +153,9 @@ export const Identify = () => {
             return(
                 <div className="Window Window_Identify">
                     <div className="Window_FirstLine Window_FirstLine_Identify">
-                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                        <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="Identify_Message1"  text="The secret key is generating, the public key of which begins with the letter Z." visible={true}/>
+                    <Message className="Identify_Message1"  text="The Root Secret key is generating, the pair of public key of which begins with the letter Z." visible={true}/>
                     <Message className="Identify_Publickey" text={PrintPublickey}                         visible={true}/>
                 </div>
             );
@@ -165,11 +165,11 @@ export const Identify = () => {
             return(
                 <div className="Window Window_Identify">
                     <div className="Window_FirstLine Window_FirstLine_Identify">
-                        <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
+                        <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent>
                     </div>
-                    <Message className="Identify_Message1"  text="Found the secretkey!"                         visible={true}/>
+                    <Message className="Identify_Message1"  text="Found the Secretkey!"                         visible={true}/>
                     <Message className="Identify_Publickey" text={PrintPublickey}                               visible={true}/>
-                    <Message className="Identify_Message2"  text="  generate OK! downloading root secretkey."   visible={true}/>
+                    <Message className="Identify_Message2"  text="  generate OK! downloading Root Secretkey."   visible={true}/>
                 </div>
             );
         } else {
@@ -178,7 +178,7 @@ export const Identify = () => {
                     return(
                         <div className="Window Window_Identify">
                             <div className="Window_FirstLine Window_FirstLine_Identify">
-                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                                <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
                             <div className="Window_ColumnDirection Window_RowDirection_Identify">
                                 <Message className="Identify_Publickey" text={rootAccount.getSrcPublickey()} visible={true}/>
@@ -191,11 +191,11 @@ export const Identify = () => {
                     return(
                         <div className="Window Window_Identify">
                             <div className="Window_FirstLine Window_FirstLine_Identify">
-                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                                <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Identify_Message1"  text={"The secret key is calculating."} visible={true}/>
+                            <Message className="Identify_Message1"  text={"The Child Secret key is calculating with Root Secret key."} visible={true}/>
                             <Message className="Identify_Publickey" text={PrintPublickey}                         visible={true}/>
-                            <Message className="Identify_Message2"  text={"Finding public key begins with the letter \""+firstChars+"\". this is current domain first two chars."} visible={true}/>
+                            <Message className="Identify_Message2"  text={"Finding this pair of public key begins with the letter \""+firstChars+"\". this is current domain first two chars."} visible={true}/>
                         </div>
                     );
                 }
@@ -204,9 +204,9 @@ export const Identify = () => {
                     return(
                         <div className="Window Window_Identify">
                             <div className="Window_FirstLine Window_FirstLine_Identify">
-                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                                <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
-                            <Message className="Identify_Message1"  text="Found the secretkey!" visible={true}/>
+                            <Message className="Identify_Message1"  text="Found the Child Secretkey!" visible={true}/>
                             <Message className="Identify_Publickey" text={PrintPublickey}       visible={true}/>
                             <Message className="Identify_Message2"  text="  calculate OK!"      visible={true}/>
                         </div>
@@ -215,7 +215,7 @@ export const Identify = () => {
                     return(
                         <div className="Window Window_Identify">
                             <div className="Window_FirstLine Window_FirstLine_Identify">
-                                <LinkOnParent className="Window_MainSite" name='zeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
+                                <LinkOnParent className="Window_MainSite" name='ZeroIDentify' url={SECURITY_SERVER+"/index.html"}></LinkOnParent> <AmountLabel caption="Balance:" amount={Amount} pointname="USDC" visible={isAmountLabelVisible} />
                             </div>
                             <div className="Window_ColumnDirection Window_RowDirection_Identify">
                                 <Message className="Identify_Publickey" text={childAccount.getSrcPublickey()} visible={true}/>
