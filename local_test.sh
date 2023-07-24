@@ -25,6 +25,7 @@ git checkout ./server/seller/src/url.ts
 git checkout ./server/landing/src/create_session.ts
 sed -i "s/zeroidentify.com/$address:4433/g" ./server/seller/src/url.ts
 sed -i "s/zeroidentify.com/$address/g" ./server/landing/src/create_session.ts
+sed -i "s/secure: false,/secure: true,/g" ./server/landing/src/create_session.ts
 
 if [ $landing = "landing" ]; then
     git checkout ./server/landing/src/public/index.html

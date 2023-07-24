@@ -37,7 +37,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: true, // Use secure cookies (HTTPS)
+        secure:  false, // Do not use secure cookies (HTTPS)
         httpOnly: true, // Prevent client-side JavaScript access to cookies
     }
 }));
